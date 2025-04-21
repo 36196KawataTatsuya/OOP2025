@@ -4,7 +4,7 @@
             /* -tom << メートルへ変換
              * -tof <, フィートへ変換  */
 
-            //if (args.Length >= 1 && args[0] == "-tom" ... のような指定あるとなお良し
+            //if (args.Length >= 1 && args[0] == "-tom" ... のような指定あるとなお良し。
 
             int arg2 = 0;
             int arg3 = 0;
