@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "DistanceConverter": {
+      "commandName": "Project",
+      "commandLineArgs": "-tof 5 23"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}
