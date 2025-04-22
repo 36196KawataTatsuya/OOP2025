@@ -19,7 +19,7 @@
 
             if (args.Length == 0) { //args[0]が無い場合
                 Console.WriteLine("例外が発生しました\nargs[0]に何も指定されていません");
-                
+
                 //-tom -tofの振り分けとargs.Lengthの判定
             } else if (args.Length == 1 && args[0] == "-tom") {
                 PrintFeetToMeterList(1, 10);
@@ -48,27 +48,22 @@
 
             //FeetToMeterの結果をConsoleにPrintする
             static void PrintFeetToMeterList(int start, int end) {
+                FeetConverter converter = new FeetConverter();
+
                 for (int feet = start; feet <= end; feet++) {
-                    double meter = FeetToMeter(feet);
+                    double meter = converter.ToMeter(feet);
                     Console.WriteLine($"{feet}ft = {meter:0.0000}m");
                 }
             }
 
             //MeterToFeetの結果をConsoleにPrintする
             static void PrintMeterToFeetList(int start, int end) {
+                FeetConverter converter = new FeetConverter();
+
                 for (int meter = start; meter <= end; meter++) {
-                    double feet = MeterToFeet(meter);
+                    double feet = converter.FromMeter(meter);
                     Console.WriteLine($"{meter}m = {feet:0.0000}ft");
                 }
-            }
-
-            //フィートからメートルへ変換するメソッド
-            static double FeetToMeter(int Feet) {
-            return Feet * 0.3048;
-            }
-            //メートルからフィートへ変換するメソッド
-            static double MeterToFeet(int Meter) {
-                return Meter / 0.3048;
             }
 
         }
