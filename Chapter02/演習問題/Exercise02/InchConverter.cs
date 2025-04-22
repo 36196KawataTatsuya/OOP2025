@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Exercise02 {
     public static class InchConverter {
 
-        //定数
+        //変換する為の定数
         private const double ratio = 0.0254;
 
         //インチからメートルへ変換して返す
