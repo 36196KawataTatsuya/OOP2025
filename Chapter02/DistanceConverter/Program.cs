@@ -51,7 +51,7 @@
                 FeetConverter converter = new FeetConverter();
 
                 for (int feet = start; feet <= end; feet++) {
-                    double meter = converter.ToMeter(feet);
+                    double meter = FeetConverter.ToMeter(feet);
                     Console.WriteLine($"{feet}ft = {meter:0.0000}m");
                 }
             }

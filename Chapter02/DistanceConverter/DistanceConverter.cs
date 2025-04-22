@@ -12,7 +12,7 @@ namespace DistanceConverter {
         }
 
         //フィートからメートルを求める
-        public double ToMeter(double feet) {
+        public static double ToMeter(double feet) {
             return feet * 0.3048;
         }
     }
