@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DistanceConverter {
-    public class FeetConverter {
+    public static class FeetConverter {
+
         //メートルからフィートを求める
         public static double FromMeter(double meter) {
             return meter / 0.3048;
