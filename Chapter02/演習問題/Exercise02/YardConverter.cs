@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Exercise02 {
-    public static class InchConverter {
+    public static class YardConverter {
 
         //変換する為の定数
-        private const double ratio = 0.0254;
+        private const double ratio = 0.9144;
 
-        //インチからメートルへ変換して返す
-        public static double ToMeter(double Inch) {
-            return Inch * ratio;
+        //ヤードからメートルへ変換して返す
+        public static double ToMeter(double Yard) {
+            return Yard * ratio;
         }
 
-        //メートルからインチへ変換して返す
+        //メートルからヤードへ変換して返す
         public static double FromMeter(double Meter) {
             return Meter / ratio;
         }

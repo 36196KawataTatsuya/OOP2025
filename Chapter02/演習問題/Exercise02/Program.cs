@@ -62,24 +62,24 @@ namespace Exercise02 {
 
 
             if (input == "1") {
-                PrintInchToMeterList(start, end);
+                PrintYardToMeterList(start, end);
             } else {
-                PrintMeterToInchList(start, end);
+                PrintMeterToYardList(start, end);
             }
 
-            //InchToMeterの結果をConsoleにPrintする
-            static void PrintInchToMeterList(int start, int end) {
-                for (int inch = start; inch <= end; inch++) {
-                    double meter = InchConverter.ToMeter(inch);
-                    Console.WriteLine($"{inch}inch = {meter:0.0000}m");
+            //YardToMeterの結果をConsoleにPrintする
+            static void PrintYardToMeterList(int start, int end) {
+                for (int Yard = start; Yard <= end; Yard++) {
+                    double meter = YardConverter.ToMeter(Yard);
+                    Console.WriteLine($"{Yard}y = {meter:0.0000}m");
                 }
             }
 
-            //InchToMeterの結果をConsoleにPrintする
-            static void PrintMeterToInchList(int start, int end) {
+            //MeterToYardの結果をConsoleにPrintする
+            static void PrintMeterToYardList(int start, int end) {
                 for (int meter = start; meter <= end; meter++) {
-                    double inch = InchConverter.FromMeter(meter);
-                    Console.WriteLine($"{meter}m = {inch:0.0000}inch");
+                    double Yard = YardConverter.FromMeter(meter);
+                    Console.WriteLine($"{meter}m = {Yard:0.0000}y");
                 }
             }
         }
