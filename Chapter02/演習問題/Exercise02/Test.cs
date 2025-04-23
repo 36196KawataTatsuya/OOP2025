@@ -1,4 +1,7 @@
-﻿using System.Security;
+﻿// 作成中
+
+
+/*using System.Security;
 
 namespace Exercise02 {
     internal class Program {
@@ -59,3 +62,4 @@ namespace Exercise02 {
         }
     }
 }
+*/
