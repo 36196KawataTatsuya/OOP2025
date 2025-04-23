@@ -8,8 +8,8 @@ namespace Exercise02 {
     public class Program {
         public static void Main(string[] args) {
             Console.WriteLine("*** 変換アプリ ***");
-            Console.WriteLine("1：インチからメートル");
-            Console.WriteLine("2：メートルからインチ");
+            Console.WriteLine("1：ヤードからメートル");
+            Console.WriteLine("2：メートルからヤード");
             //モード決定
             string input = Console.ReadLine();
             //null対策 & 指定数字外入力対策
@@ -22,66 +22,24 @@ namespace Exercise02 {
                     input = ReadL();
                 }
             } else { }
-            //スタート値の決定
-            int start = 0;
-            Console.Write("はじめ：");
-            while (true) {
-                if (int.TryParse(Console.ReadLine(), out int startInput)) {
-                    start = startInput;
-                    break;
-                } else {
-                    Console.WriteLine("数値を入力してください");
-                    Console.Write("はじめ：");
-                }
-            }
-            //エンド値の決定
-            int end = 0;
-            Console.Write("おわり：");
-            while (true) {
-                if (int.TryParse(Console.ReadLine(), out int endInput)) {
-                    end = endInput;
-                    break;
-                } else {
-                    Console.WriteLine("数値を入力してください");
-                    Console.Write("おわり：");
-                }
-            }
-            //エンド値がスタート値より小さい場合の再入力機構
-            while (end < start) {
-                Console.WriteLine("おわりの値をはじめの値より小さく指定することはできません");
-                Console.WriteLine("数値を入力してください");
-                Console.Write("おわり：");
-                while (true) {
-                    if (int.TryParse(Console.ReadLine(), out int endInput)) {
-                        end = endInput;
-                        break;
-                    } else {
-                        Console.WriteLine("数値を入力してください");
-                        Console.Write("おわり：");
-                    }
-                }
-            }
-            //モード参照して変換メソッドを起動
-            if (input == "1") {
-                PrintYardToMeterList(start, end);
-            } else {
-                PrintMeterToYardList(start, end);
-            }
 
-            //YardToMeterの結果をConsoleにPrintする
-            static void PrintYardToMeterList(int start, int end) {
-                for (int Yard = start; Yard <= end; Yard++) {
-                    double meter = YardConverter.ToMeter(Yard);
-                    Console.WriteLine($"{Yard}y = {meter:0.0000}m");
-                }
+            if (input == "1") {
+                Console.Write("変換前(インチ)：");
+                PrintYardToMeterList(int.Parse(Console.ReadLine()));
+            } else if (input == "2") {
+                Console.Write("変換前(メートル)：");
+                PrintMeterToYardList(int.Parse(Console.ReadLine()));
             }
+                //YardToMeterの結果をConsoleにPrintする
+                static void PrintYardToMeterList(int Yard) {
+                    double meter = YardConverter.ToMeter(Yard);
+                    Console.WriteLine($"変換後(メートル)：{meter:0.0000}");
+                }
 
             //MeterToYardの結果をConsoleにPrintする
-            static void PrintMeterToYardList(int start, int end) {
-                for (int meter = start; meter <= end; meter++) {
+            static void PrintMeterToYardList(int meter) {
                     double Yard = YardConverter.FromMeter(meter);
-                    Console.WriteLine($"{meter}m = {Yard:0.0000}y");
-                }
+                    Console.WriteLine($"変換後(ヤード)：{Yard:0.0000}");
             }
         }
             //不正入力時の再入力機構
