@@ -23,13 +23,22 @@ namespace Exercise02 {
                 }
             } else { }
 
-            if (input == "1") {
-                Console.Write("変換前(インチ)：");
-                PrintYardToMeterList(int.Parse(Console.ReadLine()));
-            } else if (input == "2") {
-                Console.Write("変換前(メートル)：");
-                PrintMeterToYardList(int.Parse(Console.ReadLine()));
+            Console.Write("変換前(インチ)：");
+
+            while (true) {
+                if (int.TryParse(Console.ReadLine(), out int InchVal)) {
+                    PrintYardToMeterList(InchVal);
+                    break;
+                } else {
+                    Console.WriteLine("正しく数値を入力してください");
+                } 
             }
+
+
+            if (input == "2") {
+                    Console.Write("変換前(メートル)：");
+                    PrintMeterToYardList(int.Parse(Console.ReadLine()));
+                }
                 //YardToMeterの結果をConsoleにPrintする
                 static void PrintYardToMeterList(int Yard) {
                     double meter = YardConverter.ToMeter(Yard);
