@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitConverter", "FormApps\U
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StopWatch", "FormApps\StopWatch\StopWatch.csproj", "{F7B68E53-10B2-46E6-8D09-46BA1DCFE757}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "売上集計プログラム", "売上集計プログラム", "{BBBDBB7B-33BC-4715-899D-067E43B3F8B1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalesCalculator", "Chapter02\売上集計プログラム\SalesCalculator\SalesCalculator.csproj", "{5F3A82D8-492F-4103-B394-764036076163}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,10 @@ Global
 		{F7B68E53-10B2-46E6-8D09-46BA1DCFE757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7B68E53-10B2-46E6-8D09-46BA1DCFE757}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7B68E53-10B2-46E6-8D09-46BA1DCFE757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3A82D8-492F-4103-B394-764036076163}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3A82D8-492F-4103-B394-764036076163}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3A82D8-492F-4103-B394-764036076163}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3A82D8-492F-4103-B394-764036076163}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,8 @@ Global
 		{500C2D80-4999-4326-8710-41334135AA1E} = {DC2D5B69-EE49-4C07-ABB4-AB45C7683EA9}
 		{5ACE705D-F307-49AB-A0D6-E50229E8C469} = {C8477E84-C1B9-44BA-9CEA-14D65E9CC9F3}
 		{F7B68E53-10B2-46E6-8D09-46BA1DCFE757} = {C8477E84-C1B9-44BA-9CEA-14D65E9CC9F3}
+		{BBBDBB7B-33BC-4715-899D-067E43B3F8B1} = {D1574452-AAB1-4377-B2EB-70986C005BB2}
+		{5F3A82D8-492F-4103-B394-764036076163} = {BBBDBB7B-33BC-4715-899D-067E43B3F8B1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66B8B959-9282-491F-AE2A-1B66417F4425}
