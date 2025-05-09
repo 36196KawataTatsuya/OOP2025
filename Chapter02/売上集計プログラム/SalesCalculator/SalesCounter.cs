@@ -28,7 +28,7 @@ namespace SalesCalculator {
         }
 
         //売上データを読み込み、Saleオブジェクトのリストを返す
-        internal static List<Sale> ReadSales(string filePath) {
+        public static List<Sale> ReadSales(string filePath) {
             //売上データを入れるリストオブジェクトを生成
             List<Sale> sales = new List<Sale>();
             //ファイルを一気に読み込み
