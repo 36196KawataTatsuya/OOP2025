@@ -19,7 +19,7 @@ namespace SalesCalculator {
             //読み込んだ行数分繰り返し
             foreach (string line in lines) {
                 string[] items = line.Split(',');
-                //Saleオブジェクトを生成
+                //Saleオブジェクトを生成 
                 Sale sale = new Sale() {
                     ShopName = items[0],
                     ProductCategory = items[1],

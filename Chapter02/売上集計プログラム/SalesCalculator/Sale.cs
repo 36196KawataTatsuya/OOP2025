@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SalesCalculator {
-    //売上クラス
+    //売上クラス 
     public class Sale {
         
         //店舗名
