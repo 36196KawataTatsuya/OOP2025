@@ -18,13 +18,17 @@ namespace Exercise01 {
         //2.1.4
         private static void printSongs(Song[] songs) {
                 Console.WriteLine("演目一覧\n");
+            int timeTotal = 0;
             foreach (var song in songs) {
                 var playTime = TimeSpan.FromSeconds(song.Length);
                 Console.WriteLine($"タイトル / {song.Title}");
                 Console.WriteLine($"アーティスト / {song.ArtistName}");
                 Console.WriteLine($"演奏時間 / {playTime.Minutes}:{playTime.Seconds:00}");
                 Console.WriteLine("\n");
+                timeTotal = timeTotal + song.Length;
             }
+            var totalTime = TimeSpan.FromSeconds(timeTotal);
+            Console.WriteLine($"全体演奏時間 / {totalTime.Minutes}：{totalTime.Seconds:00}");
 
         }
 
