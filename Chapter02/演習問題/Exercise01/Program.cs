@@ -29,6 +29,14 @@ namespace Exercise01 {
                 timeTotal = timeTotal + song.Length;
             }
 
+            /*または以下でも可
+             *foreach (var song in songs) {
+             *  var timespanw = TimeSpan.FromSeconds(song.Length);
+             *  Console.WriteLine(@"{0},{1}{2:m\ss}",
+             *      song.Tittle, song.ArtistName, TimeSpan.FromSeconds(song.Length));
+             *  }
+             */
+            
             var totalTime = TimeSpan.FromSeconds(timeTotal);
             Console.WriteLine($"全体演奏時間 / {totalTime.Minutes}：{totalTime.Seconds:00}");
 
