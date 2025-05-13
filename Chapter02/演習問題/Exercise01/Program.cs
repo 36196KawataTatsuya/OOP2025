@@ -17,9 +17,9 @@ namespace Exercise01 {
 
         //2.1.4
         private static void printSongs(Song[] songs) {
+                Console.WriteLine("演目一覧\n");
             foreach (var song in songs) {
                 var playTime = TimeSpan.FromSeconds(song.Length);
-                
                 Console.WriteLine($"タイトル / {song.Title}");
                 Console.WriteLine($"アーティスト / {song.ArtistName}");
                 Console.WriteLine($"演奏時間 / {playTime.Minutes}:{playTime.Seconds:00}");
