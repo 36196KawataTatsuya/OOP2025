@@ -20,15 +20,17 @@
              */
             var numbers = new[] { 5, 3, 9, 6, 7, 5, 8, 1, 0, 5, 10, 4 };
 
-            Console.WriteLine(Count(numbers, delegate(int n) { return n % 2 == 0; }));
+            Console.WriteLine(Count(numbers, n => /*5,6,7,8,9*/ 5 <= n && n < 10));
+            //var numbers に入った数値が numbers, n =>... のnに入る
+
 
         }
 
         static int Count(int[] numbers, Predicate<int> judge) {
             var count = 0;
-            foreach (var n in numbers) {
+            foreach (var v in numbers) {
                 //引数で受け取ったメソッドを呼び出す
-                if (judge(n) == true) {
+                if (judge(v) == true) {
                     count++;
                 }
             }
