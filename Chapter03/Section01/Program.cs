@@ -50,7 +50,10 @@ namespace Section01 {
         }
 
         private static void Exercise2_3(List<string> names) {
-            
+            var name = names.Where(w => w.ToString().Contains('o'));
+            foreach (var output in name) {
+                Console.WriteLine(output);
+            }
         }
 
         private static void Exercise2_4(List<string> names) {
