@@ -51,17 +51,21 @@ namespace Section01 {
         }
 
         private static void Exercise2_3(List<string> names) {
-            var name = names.Where(w => w.ToString().Contains('o'));
-            foreach (var output in name) {
+            var selected = names.Where(w => w.ToString().Contains('o')).ToArray();
+            foreach (var output in selected) {
                 Console.WriteLine(output);
             }
         }
 
         private static void Exercise2_4(List<string> names) {
-            foreach (var name in names) {
-                if (!string.IsNullOrEmpty(name) && name[0] == 'B') {
-                    Console.WriteLine(name.Length);
-                }
+            var counter = names
+                .Where(w => w
+                .ToString()
+                .StartsWith('B'))
+                .Select(s => new { s, s.Length });
+
+            foreach (var name in counter) {
+                Console.WriteLine(name.s + ": " + name.Length + "文字" );
             }
         }
 
