@@ -4,16 +4,18 @@
             var cities = new List<string> {
                 "Tokyo", "New Delhi", "Bangkok", "London", "Paris", "Berlin", "Canberra", "Hong Kong"
             };
-            /*
-             * IEnumerable、もしくはListやDictionaryなどでLINQが使えるのでWhere句などを入れられる
-             * ただし、FineAllはListでしか使えない
-             */
-            IEnumerable<string> query = cities
-                .OrderBy(s => s[0]);
 
-            foreach (var s in query) {
-                Console.WriteLine(s);
+            var query = cities.Where(s => s.Length <= 5);    //- query変数に代入
+            foreach (var item in query) {
+                Console.WriteLine(item);
             }
+            Console.WriteLine("------");
+
+            cities[0] = "Osaka";            //- cities[0]を変更 
+            foreach (var item in query) {   //- 再度、queryの内容を取り出す
+                Console.WriteLine(item);
+            }
+
 
 
 
