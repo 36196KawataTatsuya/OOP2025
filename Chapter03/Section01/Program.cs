@@ -1,4 +1,5 @@
 ﻿
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Section01 {
@@ -57,7 +58,11 @@ namespace Section01 {
         }
 
         private static void Exercise2_4(List<string> names) {
-            
+            foreach (var name in names) {
+                if (!string.IsNullOrEmpty(name) && name[0] == 'B') {
+                    Console.WriteLine(name.Length);
+                }
+            }
         }
 
     }
