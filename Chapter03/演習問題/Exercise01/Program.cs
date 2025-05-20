@@ -31,7 +31,9 @@ namespace Exercise01 {
         }
 
         private static void Exercise2(List<int> numbers) {
-            
+            foreach (int i in numbers) {
+                Console.WriteLine(i / 2);
+            }
         }
 
         private static void Exercise3(List<int> numbers) {
