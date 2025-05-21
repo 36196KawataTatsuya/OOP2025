@@ -27,8 +27,15 @@ namespace Exercise01 {
             } else {
                 Console.WriteLine("存在しません");
             }*/
-            var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
+            
+            /*var exist = numbers.Exists(n => n % 8 == 0 || n % 9 == 0);
             if (exist) {
+                Console.WriteLine("存在しています");
+            } else {
+                Console.WriteLine("存在していません");
+            }*/
+
+            if (numbers.Exists(n => n % 8 == 0 || n % 9 == 0)) {
                 Console.WriteLine("存在しています");
             } else {
                 Console.WriteLine("存在していません");
