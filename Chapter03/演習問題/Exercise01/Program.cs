@@ -44,15 +44,15 @@ namespace Exercise01 {
         }
 
         private static void Exercise2(List<int> numbers) {
-            foreach (int i in numbers) { Console.WriteLine(i / 2); }
+            numbers.ForEach(i => Console.WriteLine(i / 2));
         }
 
         private static void Exercise3(List<int> numbers) {
-            foreach (int j in numbers.Where(w => w >= 50)) { Console.WriteLine(j); }
+            numbers.Where(w => w >= 50).ToList().ForEach(j => Console.WriteLine(j));
         }
 
         private static void Exercise4(List<int> numbers) {
-            foreach (int k in numbers.Select(l => l * 2).ToList()) { Console.WriteLine(k); } 
+            numbers.Select(l => l * 2).ToList().ForEach(k => Console.WriteLine(k));
         }
     }
 }
