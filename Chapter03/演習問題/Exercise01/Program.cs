@@ -45,7 +45,7 @@ namespace Exercise01 {
         private static void Exercise3(List<int> numbers) {
             var line = numbers.Where(w => w >= 50);
             foreach (int j in numbers) {
-                Console.WriteLine(j / 2);
+                Console.WriteLine(j);
             }
         }
 
