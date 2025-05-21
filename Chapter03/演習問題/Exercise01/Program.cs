@@ -52,7 +52,7 @@ namespace Exercise01 {
         }
 
         private static void Exercise4(List<int> numbers) {
-            numbers.Select(l => l * 2).ToList().ForEach(k => Console.WriteLine(k));
+            numbers.Select(l => l * 2).ToList().ForEach(Console.WriteLine);
         }
     }
 }
