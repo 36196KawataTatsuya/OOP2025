@@ -41,7 +41,6 @@ namespace Exercise01 {
         }
 
         private static void Exercise3(List<int> numbers) {
-            var line = numbers.Where(w => w >= 50);
             foreach (int j in numbers.Where(w => w >= 50)) { Console.WriteLine(j); }
         }
 
