@@ -53,7 +53,7 @@ namespace Exercise01 {
             List<int> sel = numbers.Select(l => l * 2).ToList();
             foreach (int k in sel) {
                 Console.WriteLine(k);
-            }
+            } 
         }
     }
 }
