@@ -37,23 +37,16 @@ namespace Exercise01 {
         }
 
         private static void Exercise2(List<int> numbers) {
-            foreach (int i in numbers) {
-                Console.WriteLine(i / 2);
-            }
+            foreach (int i in numbers) { Console.WriteLine(i / 2); }
         }
 
         private static void Exercise3(List<int> numbers) {
             var line = numbers.Where(w => w >= 50);
-            foreach (int j in line) {
-                Console.WriteLine(j);
-            }
+            foreach (int j in numbers.Where(w => w >= 50)) { Console.WriteLine(j); }
         }
 
         private static void Exercise4(List<int> numbers) {
-            List<int> sel = numbers.Select(l => l * 2).ToList();
-            foreach (int k in sel) {
-                Console.WriteLine(k);
-            } 
+            foreach (int k in numbers.Select(l => l * 2).ToList()) { Console.WriteLine(k); } 
         }
     }
 }
