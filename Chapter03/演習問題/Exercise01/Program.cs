@@ -44,7 +44,7 @@ namespace Exercise01 {
         }
 
         private static void Exercise2(List<int> numbers) {
-            numbers.ForEach(i => Console.WriteLine(i / 2));
+            numbers.ForEach(i => Console.WriteLine(i / 2.0));
         }
 
         private static void Exercise3(List<int> numbers) {
