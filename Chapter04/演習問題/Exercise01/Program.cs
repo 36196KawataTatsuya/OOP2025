@@ -22,14 +22,14 @@ namespace Exercise01 {
                     Console.WriteLine(l);
                 }
             }
-
+            Console.WriteLine("");
             Console.WriteLine("[ for ]");
             for (int i = 0; i < langs.Count; i++) {
                 if (langs[i].Contains("S")) {
                     Console.WriteLine(langs[i]);
                 }
             }
-
+            Console.WriteLine("");
             Console.WriteLine("[ while ]");
             int x = 0;
             while (x < langs.Count) {
@@ -38,6 +38,7 @@ namespace Exercise01 {
                 }
                 x++;
             }
+            Console.WriteLine("");
         }
 
         private static void Exercise2(List<string> langs) {
