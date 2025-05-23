@@ -46,6 +46,13 @@ namespace Exercise01 {
         }
 
         private static void Exercise3(List<string> langs) {
+            Console.WriteLine("二行");
+            //二行
+            var lang = langs.Find(l => l.Length == 10) ?? "unknown";
+            Console.WriteLine(lang);
+
+            Console.WriteLine("一行");
+            //一行
             Console.WriteLine(langs.Find(l => l.Length == 10) ?? "unknown");
         }
     }
