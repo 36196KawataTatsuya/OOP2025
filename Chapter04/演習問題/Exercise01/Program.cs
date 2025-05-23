@@ -16,7 +16,28 @@ namespace Exercise01 {
         }
 
         private static void Exercise1(List<string> langs) {
+            Console.WriteLine("[ foreach ]");
+            foreach (string l in langs) {
+                if (l.Contains("S")) {
+                    Console.WriteLine(l);
+                }
+            }
 
+            Console.WriteLine("[ for ]");
+            for (int i = 0; i < langs.Count; i++) {
+                if (langs[i].Contains("S")) {
+                    Console.WriteLine(langs[i]);
+                }
+            }
+
+            Console.WriteLine("[ while ]");
+            int x = 0;
+            while (x < langs.Count) {
+                if (langs[x].Contains("S")) {
+                    Console.WriteLine(langs[x]);
+                }
+                x++;
+            }
         }
 
         private static void Exercise2(List<string> langs) {
