@@ -41,6 +41,22 @@
                 }
             }
 
+            switch (number) {
+                case < 0:
+                    Console.WriteLine(number);
+                    break;
+                case >= 0 and < 100:
+                    Console.WriteLine(number * 2);
+                    break;
+                case >= 100 and < 500:
+                    Console.WriteLine(number * 3);
+                    break;
+                default:
+                    Console.WriteLine(number);
+                    break;
+            }
+        }
+
 
 
         private static void Exercise3() {
