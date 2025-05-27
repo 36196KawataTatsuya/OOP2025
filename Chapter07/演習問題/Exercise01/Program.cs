@@ -30,6 +30,16 @@ namespace Exercise01 {
 
         private static void Exercise2(int[] numbers) {
             numbers.TakeLast(2).ToList().ForEach(n => Console.WriteLine(n));
+
+            /*
+             *  numbers.Reverse().Take(2).Reverse().ToList().ForEach(n => Console.WriteLine(n));
+             *  
+             *  numbers.Skip(numbers.Length - 2).Take(2).ToList().ForEach(n => Console.WriteLine(n));
+             *  
+             *  foreach (var n in numbers.Skip(numbers.Length - 2)) {
+             *  Console.WriteLine(n);
+             *  }
+             */
         }
 
         private static void Exercise3(int[] numbers) {
