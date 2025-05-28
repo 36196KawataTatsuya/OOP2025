@@ -10,6 +10,8 @@ namespace Section01 {
             var books = new List<Book> {
             new Book { Title = "こころ", Price = 400, Pages = 378 },
             new Book { Title = "人間失格", Price = 281, Pages = 212 },
+            new Book { Title = "適当な書籍A", Price = 281, Pages = 242 },
+            new Book { Title = "適当な書籍B", Price = 281, Pages = 286 },
             new Book { Title = "伊豆の踊子", Price = 389, Pages = 201 },
             new Book { Title = "若草物語", Price = 637, Pages = 464 },
             new Book { Title = "銀河鉄道の夜", Price = 411, Pages = 276 },
