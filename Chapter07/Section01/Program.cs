@@ -21,12 +21,31 @@ namespace Section01 {
             books.Where(b => b.Price == books.Min(b => b.Price)).ToList().ForEach(f => Console.WriteLine(f.Title + "/" + f.Price));
             Console.WriteLine("----------------");
 
+            /*
+             *  var book = books.Where(x => x.Price == books.Min(b => b.Price)).Select(x => new {x.Title, x.Price});
+             *  foreach (var item in book) {
+             *      Console.WriteLine(item.Title + " : " + item.Price);
+             *  }
+             */
+
             //４．ページが多い書籍名とページ数を表示
             Console.WriteLine(books.OrderByDescending(b => b.Price).FirstOrDefault()?.Title + " / " + books.Max(b => b.Price));
             Console.WriteLine("----------------");
 
+            /*
+             *  books.Where(x => x.Pages == books.Max(b => b.Pages))
+             *  .ToList()
+             *  .ForEach(f => Console.WriteLine($"{f.Title} : {f.Pages}ページ"));
+             */
+
             //５．タイトルに「物語」が含まれている書籍名をすべて表示
             books.Where(b => b.Title.Contains("物語")).ToList().ForEach(f => Console.WriteLine(f.Title));
+            /*
+             *  var titles = books.Where(x => x.Title.Contais("物語"));
+             *  foreach var item in titles) {
+             *      Console.WriteLine(item.Title);
+             *  }
+             */
 
         }
     }
