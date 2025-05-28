@@ -51,7 +51,7 @@ namespace Exercise02 {
             Console.WriteLine(books.Where(b => b.Title.Contains("C#")).Average(b => b.Pages).ToString("0.00"));
         }
         private static void Exercise4(List<Book> books) {
-            Console.WriteLine(books.Where(b => b.Price >= 4000).First().Title);
+            Console.WriteLine(books.FirstOrDefault(b => b.Price >= 4000)?.Title ?? "本が見つかりませんでした");
         }
         private static void Exercise5(List<Book> books) {
             Console.WriteLine(books.Where(b => b.Price < 4000).Max(b => b.Pages));
