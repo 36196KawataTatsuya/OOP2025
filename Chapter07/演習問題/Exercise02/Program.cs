@@ -11,7 +11,7 @@ namespace Exercise02 {
                 new Book { Title = "私でも分かったASP.NET Core", Price = 3200, Pages = 453 },
                 new Book { Title = "楽しいC#プログラミング教室", Price = 2540, Pages = 348 },
             };
-
+            #region 各演習問題の呼び出し
             Console.WriteLine("7.2.1");
             Exercise1(books);
             Console.WriteLine("");
@@ -38,33 +38,27 @@ namespace Exercise02 {
 
             Console.WriteLine("7.2.7");
             Exercise7(books);
-
+            #endregion
         }
 
         private static void Exercise1(List<Book> books) {
             books.Where(b => b.Title.Contains("ワンダフル・C#ライフ")).ToList().ForEach(b => Console.WriteLine($"{b.Title} - {b.Price}円 / {b.Pages}ページ"));
         }
-
         private static void Exercise2(List<Book> books) {
             Console.WriteLine(books.Count(b => b.Title.Contains("C#")));
         }
-
         private static void Exercise3(List<Book> books) {
             Console.WriteLine(books.Where(b => b.Title.Contains("C#")).Average(b => b.Pages).ToString("0.00"));
         }
-
         private static void Exercise4(List<Book> books) {
             Console.WriteLine(books.Where(b => b.Price >= 4000).First().Title);
         }
-
         private static void Exercise5(List<Book> books) {
             Console.WriteLine(books.Where(b => b.Price < 4000).Max(b => b.Pages));
         }
-
         private static void Exercise6(List<Book> books) {
             books.Where(b => b.Pages >= 400).OrderByDescending(b => b.Pages).ToList().ForEach(b => Console.WriteLine($"{b.Title} - {b.Price}円"));
         }
-
         private static void Exercise7(List<Book> books) {
             books.Where(b => b.Pages < 500 && b.Title.Contains("C#")).ToList().ForEach(b => Console.WriteLine($"{b.Title}"));
         }
