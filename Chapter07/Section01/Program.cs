@@ -28,6 +28,7 @@ namespace Section01 {
              *  }
              */
 
+
             //４．ページが多い書籍名とページ数を表示
             Console.WriteLine(books.OrderByDescending(b => b.Price).FirstOrDefault()?.Title + " / " + books.Max(b => b.Price));
             Console.WriteLine("----------------");
@@ -37,6 +38,7 @@ namespace Section01 {
              *  .ToList()
              *  .ForEach(f => Console.WriteLine($"{f.Title} : {f.Pages}ページ"));
              */
+
 
             //５．タイトルに「物語」が含まれている書籍名をすべて表示
             books.Where(b => b.Title.Contains("物語")).ToList().ForEach(f => Console.WriteLine(f.Title));
