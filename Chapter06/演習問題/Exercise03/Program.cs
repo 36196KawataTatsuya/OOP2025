@@ -33,9 +33,14 @@ namespace Exercise03 {
         }
 
         private static void Exercise3(string text) {
-            //var StringBuilder = text.Split(' ');
-            //Console.WriteLine(string.Join(" ", StringBuilder));
-            //作成中...
+            var sb = new StringBuilder();
+            var count = text.Split(' ').Length;
+            foreach (var word in text.Split(' ')) {
+                sb.Append(word);
+                count--;
+                sb.Append(count > 0 ? ' ' : '.');
+            }
+            Console.WriteLine(sb);
         }
 
         private static void Exercise4(string text) {
