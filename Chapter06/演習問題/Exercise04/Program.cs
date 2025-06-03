@@ -2,12 +2,12 @@
     internal class Program {
         static void Main(string[] args) {
             var line = "Novelist=谷崎潤一郎;BestWork=春琴抄;Born=1886";
-            line.Split(';').ToList().ForEach(l => {
-                var keyValue = (l.Split('='));
+            line.Split(';').ToList().ForEach(s => {
+                var keyValue = (s.Split('='));
                 if (keyValue.Length == 2) {
                     Console.WriteLine($"{ToJapanese(keyValue[0])}：{keyValue[1]}");
                 } else {
-                    Console.WriteLine($"無効な形式: {l}");
+                    Console.WriteLine($"無効な形式: {s}");
                 }
             });
 
@@ -25,7 +25,7 @@
                 "Born" => "誕生年",
                 _ => "引数keyは正しい値ではありません"
             };
-            return label; //エラーをなくすためのダミー
+            return label;
         }
     }
 }
