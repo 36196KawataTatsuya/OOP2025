@@ -72,11 +72,19 @@ namespace Exercise03 {
             for (char c = 'a'; c <= 'z'; c++) {
                 if (alphabetCount[c] > 0) {
                     Console.WriteLine($"{c}:{alphabetCount[c]}");
+                } else if (alphabetCount[c] == 0) {
+                    Console.WriteLine($"{c}:0");
+                } else {
+                    Console.WriteLine("エラーメッセージ");
                 }
             }
 
+            //以下ChatGPTによるforとLINQ式を使用した解答例 (学習用)
 
-
+            //for (char c = 'a'; c <= 'z'; c++) {
+            //    int count = text.ToLower().Count(tc => tc == c);
+            //    Console.WriteLine($"{c}:{count}");
+            //}
 
         }
 
