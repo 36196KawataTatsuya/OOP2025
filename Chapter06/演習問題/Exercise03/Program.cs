@@ -20,6 +20,9 @@ namespace Exercise03 {
 
             Console.WriteLine("6.3.5");
             Exercise5(text);
+
+            Console.WriteLine("6.3.99");
+            Exercise6(text);
             #endregion
 
         }
@@ -49,6 +52,32 @@ namespace Exercise03 {
 
         private static void Exercise5(string text) {
             Array.ForEach(text.Split(' ').Where(x => x.Length <= 4).ToArray(), word => Console.WriteLine(word));
+        }
+
+        private static void Exercise6(string text) {
+            //Dictionaryを用いてaからzまでを初期値0個として格納
+            var alphabetCount = new Dictionary<char, int>();
+            for (char c = 'a'; c <= 'z'; c++) {
+                alphabetCount[c] = 0;
+            }
+
+            //各文字のカウントを実行してkeyにvalueを格納
+            foreach (char c in text.ToLower()) {
+                if (alphabetCount.ContainsKey(c)) {
+                    alphabetCount[c]++;
+                }
+            }
+
+            //a~zで1以上の文字を含んでいるものを出力
+            for (char c = 'a'; c <= 'z'; c++) {
+                if (alphabetCount[c] > 0) {
+                    Console.WriteLine($"{c}:{alphabetCount[c]}");
+                }
+            }
+
+
+
+
         }
 
     }
