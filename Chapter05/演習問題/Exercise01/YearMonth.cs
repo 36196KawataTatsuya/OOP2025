@@ -13,5 +13,13 @@ namespace Exercise01 {
         //5.1.2
         public bool Is21Century => Year >= 2001 && Year <= 2100;
 
+        //5.1.3
+        public YearMonth AddOneMonth() {
+
+        }
+
+        //5.1.4
+        public override string ToString() => 
+
     }
 }
