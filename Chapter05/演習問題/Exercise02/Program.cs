@@ -50,7 +50,9 @@ namespace Exercise02 {
             } else {
                 Console.WriteLine($"{result.Year}");
             }
-        }
+
+            //Console.WriteLine(FindFirst21C(ymCollection)?.ToString() ?? "21世紀のデータはありません");
+        }   
 
         private static void Exercise5(YearMonth[] ymCollection) {
             YearMonth[] nextMonthCollection = ymCollection.Select(yc => yc.AddOneMonth()).ToArray();
