@@ -11,7 +11,7 @@ namespace Exercise02 {
             Console.WriteLine("1：ヤードからメートル");
             Console.WriteLine("2：メートルからヤード");
             //モード決定
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
             //null対策 & 指定数字外入力対策
             if (input == null) {
                 while (input == null) {
@@ -37,7 +37,7 @@ namespace Exercise02 {
 
             if (input == "2") {
                     Console.Write("変換前(メートル)：");
-                    PrintMeterToYardList(int.Parse(Console.ReadLine()));
+                PrintMeterToYardList(int.Parse(Console.ReadLine()));
                 }
                 //YardToMeterの結果をConsoleにPrintする
                 static void PrintYardToMeterList(int Yard) {

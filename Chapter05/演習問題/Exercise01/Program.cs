@@ -1,7 +1,8 @@
 ﻿namespace Exercise01 {
-    internal class Program {
+    public class Program {
         static void Main(string[] args) {
-            Console.WriteLine("Hello, World!");
+            var year = Console.ReadLine();
+            var month = Console.ReadLine();
         }
     }
 }
