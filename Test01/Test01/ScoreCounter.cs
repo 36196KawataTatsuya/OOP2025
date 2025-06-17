@@ -9,7 +9,7 @@ namespace Test01 {
             _score = ReadScore(filePath);
         }
 
-        //メソッドの概要： 
+        //メソッドの概要：csvファイルを読み込み、Studentオブジェクトのリストを返す
         private static IEnumerable<Student> ReadScore(string filePath) {
             //スコアデータを入れるリストオブジェクトを生成
             var students = new List<Student>();
@@ -21,22 +21,25 @@ namespace Test01 {
                 //Studentオブジェクトを生成 
                 var student = new Student() {
                     Name = items[0],
-                    Subjects = items[1],
-                    Amount = int.Parse(items[2])
+                    Subject = items[1],
+                    Score = int.Parse(items[2])
                 };
-                sales.Add(sale);
+                students.Add(student);
             }
-
-            return sales;
+            return students;
         }
 
-        //メソッドの概要： 
+        //メソッドの概要：教科ごとの合計点を求める
         public IDictionary<string, int> GetPerStudentScore() {
-
-
-
-
-
+            var dict = new SortedDictionary<string, int>();
+            foreach (var score in _score) {
+                if (dict.ContainsKey(score.Subject)) {
+                    dict[score.Subject] += score.Score;
+                } else {
+                    dict[score.Subject] = score.Score;
+                }
+            }
+            return dict;
         }
     }
 }
