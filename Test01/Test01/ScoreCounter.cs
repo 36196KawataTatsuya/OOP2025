@@ -31,7 +31,9 @@ namespace Test01 {
 
         //メソッドの概要：教科ごとの合計点を求める
         public IDictionary<string, int> GetPerStudentScore() {
+            //教科ごとの合計点を保存するDictionaryを生成
             var dict = new SortedDictionary<string, int>();
+            //スコアデータを一つずつ取り出して、教科ごとに合計点を求める
             foreach (var score in _score) {
                 if (dict.ContainsKey(score.Subject)) {
                     dict[score.Subject] += score.Score;
