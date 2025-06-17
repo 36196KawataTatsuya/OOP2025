@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Test01 {
     public class Student {
         //オブジェクト初期化子で設定を強制する
-        private string Name { get; init; } = string.Empty;
-        private string Subject { get; init; } = string.Empty;
-        private int Score { get; init; }
+        private string Name { get; set; } = string.Empty;
+        private string Subject { get; set; } = string.Empty;
+        private int Score { get; set; }
     }
 }
