@@ -55,7 +55,7 @@ namespace Section01 {
 
             //自分の生年月日は何曜日かをプログラムから調べる
             var dayOfWeek = birthday.DayOfWeek;
-            string[] dOWString = {"日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"};
+            string[] dOWString = { "日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日" };
             Console.WriteLine("自己流での曜日判定");
             Console.WriteLine($"誕生日の曜日は:{dOWString[(int)dayOfWeek]}");
 
@@ -81,6 +81,37 @@ namespace Section01 {
             //生まれてからの日数を求める
             var daysSinceBirth = (now - birthday).Days;
             Console.WriteLine($"生まれてからの日数は:{daysSinceBirth}日");
+
+            //年齢を求める
+            var age = now.Year - birthday.Year;
+            if (now.Month < birthday.Month || (now.Month == birthday.Month && now.Day < birthday.Day)) {
+                age--; // 誕生日がまだ来ていない場合は1年引く
+            }
+            Console.WriteLine($"年齢は:{age}歳");
+            Console.WriteLine();
+
+            //生まれてからの秒数を求める
+            //TimeSpan diff;
+            //var birth = new DateTime(year, month, day);
+            //diff = DateTime.Now - birth;
+            //Console.WriteLine($"\r{diff.TotalSeconds}");
+            //Console.WriteLine();
+
+
+            while (true) {
+                // キーが押されているかチェック
+                if (Console.KeyAvailable) {
+                    var key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.Enter) {
+                        break;
+                    }
+                }
+
+                now = DateTime.Now;
+                Console.Write($"\rNow Date:{now}");
+                Thread.Sleep(100); // 待機
+            }
+            Console.WriteLine("\nプログラムを終了しました\n\n\n\n\n");
 
         }
     }
