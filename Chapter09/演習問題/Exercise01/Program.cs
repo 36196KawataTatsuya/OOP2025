@@ -28,7 +28,9 @@ namespace Exercise01 {
         private static void DisplayDatePattern3(DateTime dateTime) {
             var culture = new CultureInfo("ja-JP");
             culture.DateTimeFormat.Calendar = new JapaneseCalendar();
-
+            // 令和6年03月09日 19時03分09秒
+            var formattedDate = string.Format(culture, "{0:ggyy年MM月dd日 HH時mm分ss秒}", dateTime);
+            Console.WriteLine(formattedDate);
         }
 
 
