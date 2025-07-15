@@ -3,6 +3,8 @@ using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Exercise03 {
     internal class Program {
@@ -17,15 +19,16 @@ namespace Exercise03 {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             };
-            try {
-                var jsonString = File.ReadAllText(filePath);
-                return 
+            var text = File.ReadAllText(filePath);
+            var employees = JsonSerializer.Deserialize<Employee[]>(text, options);
+            return employees ?? [];
+        }
 
-            }
-
-            }
         static void ToXmlFile(Employee[] employees) {
-
+            using (var writer = XmlWriter.Create("employees.xml")) {
+                var serializer = new XmlSerializer(typeof(Employee[]));
+                serializer.Serialize(writer, employees);
+            }
 
         }
     }
