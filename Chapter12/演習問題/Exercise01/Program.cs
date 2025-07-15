@@ -78,13 +78,17 @@ namespace Exercise01 {
         }
 
         //問題12.1.3
-        //ファイルから読み込みデシリアル化する
+        //デシリアル化+return
         static Employee[] Deserialize_f(string filePath) {
-            var jsonString = File.ReadAllText(filePath);
             var options = new JsonSerializerOptions {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                WriteIndented = true,
             };
-            return JsonSerializer.Deserialize<Employee[]>(jsonString, options) ?? [];
+            var text = File.ReadAllText(filePath);
+            var employees = JsonSerializer.Deserialize<Employee[]>(text, options);
+            return employees ?? [];
+
         }
 
     }
