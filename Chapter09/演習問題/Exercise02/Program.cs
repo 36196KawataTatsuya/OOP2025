@@ -1,7 +1,63 @@
-﻿namespace Exercise02 {
+﻿
+namespace Exercise02 {
     internal class Program {
         static void Main(string[] args) {
-            Console.WriteLine("Hello, World!");
+            Exercise1_1();  //テストケース１
+            Console.WriteLine();
+            Exercise1_2();//テストケース２
+            Console.WriteLine();
+            Exercise2();
         }
+        // 9.2.1を呼び出すテスト用メソッド
+        private static void Exercise1_1() {
+            var dt = new DateTime(2024, 7, 1);
+            foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek))) {
+                Console.Write("{0:yyyy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                Console.WriteLine("{0:yyyy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
+            }
+        }
+
+        // 9.2.1を呼び出すテスト用メソッド
+        private static void Exercise1_2() {
+            var dt = new DateTime(2024, 8, 29);
+            foreach (var dayofweek in Enum.GetValues(typeof(DayOfWeek))) {
+                Console.Write("{0:yyyy/MM/dd}の次週の{1}: ", dt, (DayOfWeek)dayofweek);
+                Console.WriteLine("{0:yyyy/MM/dd(ddd)}", NextWeek(dt, (DayOfWeek)dayofweek));
+            }
+        }
+
+        // 9.2.1【ここにプログラムを作成する】
+        static DateTime NextWeek(DateTime date, DayOfWeek dayOfWeek) {
+            // 指定された日付から次週の指定された曜日を求める
+            //int daysToAdd = ((int)dayOfWeek - (int)date.DayOfWeek + 7) % 7;
+            //if (daysToAdd == 0) {
+            //    daysToAdd = 7;
+            //}
+            //return date.AddDays(daysToAdd);
+            var days = 7 - (int)date.DayOfWeek + (int)dayOfWeek;
+            return date.AddDays(days);
+        }
+
+        private static void Exercise2() {
+            var birthday = new DateOnly(2001, 4, 19);
+            var targetDay = new DateOnly(2030, 4, 18);
+            var age = GetAge(birthday, targetDay);
+            Console.WriteLine(age);
+        }
+
+        // 9.2.2【ここにプログラムを作成する】
+        static int GetAge(DateOnly birthday, DateOnly targetDay) {
+            //int age = targetDay.Year - birthday.Year;
+            //if (targetDay.Month < birthday.Month ||
+            //    (targetDay.Month == birthday.Month && targetDay.Day < birthday.Day)) {
+            //    age--;
+            var age = targetDay.Year - birthday.Year;
+            if (targetDay < birthday.AddYears(age)) {
+                age--;
+            }
+            return age;
+            //return age;
+        }
+
     }
 }
