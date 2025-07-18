@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             btRssGet = new Button();
             lbTitles = new ListBox();
-            webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            wvRssLink = new Microsoft.Web.WebView2.WinForms.WebView2();
             urlSelect = new Button();
             urlClear = new Button();
             rollback = new Button();
@@ -36,7 +36,7 @@
             favoriteRemove = new Button();
             urlComboBox = new ComboBox();
             favoriteName = new ComboBox();
-            ((System.ComponentModel.ISupportInitialize)webView21).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)wvRssLink).BeginInit();
             SuspendLayout();
             // 
             // btRssGet
@@ -62,15 +62,15 @@
             // 
             // webView21
             // 
-            webView21.AllowExternalDrop = true;
-            webView21.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            webView21.CreationProperties = null;
-            webView21.DefaultBackgroundColor = Color.White;
-            webView21.Location = new Point(12, 211);
-            webView21.Name = "webView21";
-            webView21.Size = new Size(933, 442);
-            webView21.TabIndex = 3;
-            webView21.ZoomFactor = 1D;
+            wvRssLink.AllowExternalDrop = true;
+            wvRssLink.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            wvRssLink.CreationProperties = null;
+            wvRssLink.DefaultBackgroundColor = Color.White;
+            wvRssLink.Location = new Point(12, 211);
+            wvRssLink.Name = "webView21";
+            wvRssLink.Size = new Size(933, 442);
+            wvRssLink.TabIndex = 3;
+            wvRssLink.ZoomFactor = 1D;
             // 
             // urlSelect
             // 
@@ -185,7 +185,7 @@
             Controls.Add(favoriteName);
             Controls.Add(urlComboBox);
             Controls.Add(favoriteLabel);
-            Controls.Add(webView21);
+            Controls.Add(wvRssLink);
             Controls.Add(lbTitles);
             Controls.Add(urlClear);
             Controls.Add(favoriteRemove);
@@ -197,7 +197,7 @@
             Controls.Add(btRssGet);
             Name = "Form1";
             Text = "RSSリーダー";
-            ((System.ComponentModel.ISupportInitialize)webView21).EndInit();
+            ((System.ComponentModel.ISupportInitialize)wvRssLink).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -205,7 +205,7 @@
         #endregion
         private Button btRssGet;
         private ListBox lbTitles;
-        private Microsoft.Web.WebView2.WinForms.WebView2 webView21;
+        private Microsoft.Web.WebView2.WinForms.WebView2 wvRssLink;
         private Button urlSelect;
         private Button urlClear;
         private Button rollback;

@@ -44,20 +44,20 @@ namespace RssReader {
                 linkUrl = selectedItem.Link;
             }
             if (!string.IsNullOrWhiteSpace(linkUrl) && Uri.TryCreate(linkUrl, UriKind.Absolute, out Uri? uriResult)) {
-                webView21.Source = uriResult;
+                wvRssLink.Source = uriResult;
             }
         }
 
         private void rollback_Click(object sender, EventArgs e) {
-            webView21.GoBack();
+            wvRssLink.GoBack();
         }
 
         private void forward_Click(object sender, EventArgs e) {
-            webView21.GoForward();
+            wvRssLink.GoForward();
         }
 
         private void reflesh_Click(object sender, EventArgs e) {
-            webView21.Refresh();
+            wvRssLink.Refresh();
         }
 
         private void favoriteAdd_Click(object sender, EventArgs e) {
