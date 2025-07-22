@@ -60,17 +60,18 @@
             lbTitles.TabIndex = 2;
             lbTitles.Click += lbTitles_Click;
             // 
-            // webView21
+            // wvRssLink
             // 
             wvRssLink.AllowExternalDrop = true;
             wvRssLink.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             wvRssLink.CreationProperties = null;
             wvRssLink.DefaultBackgroundColor = Color.White;
             wvRssLink.Location = new Point(12, 211);
-            wvRssLink.Name = "webView21";
+            wvRssLink.Name = "wvRssLink";
             wvRssLink.Size = new Size(933, 442);
             wvRssLink.TabIndex = 3;
             wvRssLink.ZoomFactor = 1D;
+            wvRssLink.SourceChanged += wvRssLink_SourceChanged;
             // 
             // urlSelect
             // 

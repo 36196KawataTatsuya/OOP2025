@@ -10,6 +10,8 @@ namespace RssReader {
 
         public Form1() {
             InitializeComponent();
+            rollback.Enabled = false;
+            forward.Enabled = false;
         }
 
         private async void btRssGet_Click(object sender, EventArgs e) {
@@ -45,35 +47,46 @@ namespace RssReader {
             }
             if (!string.IsNullOrWhiteSpace(linkUrl) && Uri.TryCreate(linkUrl, UriKind.Absolute, out Uri? uriResult)) {
                 wvRssLink.Source = uriResult;
-            }
-        }
-
-        private void rollback_Click(object sender, EventArgs e) {
-            wvRssLink.GoBack();
-        }
-
-        private void forward_Click(object sender, EventArgs e) {
-            wvRssLink.GoForward();
-        }
-
-        private void reflesh_Click(object sender, EventArgs e) {
-            wvRssLink.Refresh();
+            }   
         }
 
         private void favoriteAdd_Click(object sender, EventArgs e) {
-
+            
         }
 
         private void favoriteRemove_Click(object sender, EventArgs e) {
 
         }
 
-        private void urlClear_Click(object sender, EventArgs e) {
-            urlComboBox.Text = string.Empty;
-        }
-
         private void urlSelect_Click(object sender, EventArgs e) {
 
         }
+
+        private void wvRssLink_SourceChanged(object sender, Microsoft.Web.WebView2.Core.CoreWebView2SourceChangedEventArgs e) {
+            if (wvRssLink.CanGoBack) {
+                rollback.Enabled = true;
+            } else {
+                rollback.Enabled = false;
+            }
+            if (wvRssLink.CanGoForward) {
+                forward.Enabled = true;
+            } else {
+                forward.Enabled = false;
+            }
+        }
+
+        private void urlClear_Click(object sender, EventArgs e) {
+            urlComboBox.Text = string.Empty;
+        }
+        private void rollback_Click(object sender, EventArgs e) {
+            wvRssLink.GoBack();
+        }
+        private void forward_Click(object sender, EventArgs e) {
+            wvRssLink.GoForward();
+        }
+        private void reflesh_Click(object sender, EventArgs e) {
+            wvRssLink.Reload();
+        }
+
     }
 }
