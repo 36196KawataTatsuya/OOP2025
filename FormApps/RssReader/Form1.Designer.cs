@@ -35,7 +35,6 @@
             favoriteRemove = new Button();
             urlComboBox = new ComboBox();
             favoriteName = new ComboBox();
-            ssBottomStatus = new StatusStrip();
             ((System.ComponentModel.ISupportInitialize)wvRssLink).BeginInit();
             SuspendLayout();
             // 
@@ -68,7 +67,7 @@
             wvRssLink.DefaultBackgroundColor = Color.White;
             wvRssLink.Location = new Point(12, 211);
             wvRssLink.Name = "wvRssLink";
-            wvRssLink.Size = new Size(1040, 429);
+            wvRssLink.Size = new Size(1040, 442);
             wvRssLink.TabIndex = 3;
             wvRssLink.ZoomFactor = 1D;
             wvRssLink.SourceChanged += wvRssLink_SourceChanged;
@@ -167,20 +166,11 @@
             favoriteName.Size = new Size(232, 29);
             favoriteName.TabIndex = 6;
             // 
-            // ssBottomStatus
-            // 
-            ssBottomStatus.Location = new Point(0, 643);
-            ssBottomStatus.Name = "ssBottomStatus";
-            ssBottomStatus.Size = new Size(1064, 22);
-            ssBottomStatus.TabIndex = 7;
-            ssBottomStatus.Text = "statusStrip1";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1064, 665);
-            Controls.Add(ssBottomStatus);
             Controls.Add(favoriteName);
             Controls.Add(urlComboBox);
             Controls.Add(favoriteLabel);
@@ -213,6 +203,5 @@
         private Button favoriteRemove;
         private ComboBox urlComboBox;
         private ComboBox favoriteName;
-        private StatusStrip ssBottomStatus;
     }
 }
