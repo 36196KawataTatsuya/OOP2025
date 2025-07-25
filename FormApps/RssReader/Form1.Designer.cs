@@ -26,7 +26,6 @@
             btRssGet = new Button();
             lbTitles = new ListBox();
             wvRssLink = new Microsoft.Web.WebView2.WinForms.WebView2();
-            urlSelect = new Button();
             urlClear = new Button();
             rollback = new Button();
             forward = new Button();
@@ -36,13 +35,14 @@
             favoriteRemove = new Button();
             urlComboBox = new ComboBox();
             favoriteName = new ComboBox();
+            ssBottomStatus = new StatusStrip();
             ((System.ComponentModel.ISupportInitialize)wvRssLink).BeginInit();
             SuspendLayout();
             // 
             // btRssGet
             // 
             btRssGet.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            btRssGet.Location = new Point(620, 12);
+            btRssGet.Location = new Point(674, 12);
             btRssGet.Name = "btRssGet";
             btRssGet.Size = new Size(106, 29);
             btRssGet.TabIndex = 1;
@@ -68,26 +68,15 @@
             wvRssLink.DefaultBackgroundColor = Color.White;
             wvRssLink.Location = new Point(12, 211);
             wvRssLink.Name = "wvRssLink";
-            wvRssLink.Size = new Size(933, 442);
+            wvRssLink.Size = new Size(1040, 429);
             wvRssLink.TabIndex = 3;
             wvRssLink.ZoomFactor = 1D;
             wvRssLink.SourceChanged += wvRssLink_SourceChanged;
             // 
-            // urlSelect
-            // 
-            urlSelect.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            urlSelect.Location = new Point(12, 11);
-            urlSelect.Name = "urlSelect";
-            urlSelect.Size = new Size(97, 29);
-            urlSelect.TabIndex = 1;
-            urlSelect.Text = "選択...";
-            urlSelect.UseVisualStyleBackColor = true;
-            urlSelect.Click += urlSelect_Click;
-            // 
             // urlClear
             // 
             urlClear.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
-            urlClear.Location = new Point(115, 11);
+            urlClear.Location = new Point(12, 12);
             urlClear.Name = "urlClear";
             urlClear.Size = new Size(97, 29);
             urlClear.TabIndex = 1;
@@ -164,9 +153,9 @@
             // 
             urlComboBox.Font = new Font("Yu Gothic UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 128);
             urlComboBox.FormattingEnabled = true;
-            urlComboBox.Location = new Point(218, 11);
+            urlComboBox.Location = new Point(115, 12);
             urlComboBox.Name = "urlComboBox";
-            urlComboBox.Size = new Size(396, 29);
+            urlComboBox.Size = new Size(553, 29);
             urlComboBox.TabIndex = 6;
             // 
             // favoriteName
@@ -178,11 +167,20 @@
             favoriteName.Size = new Size(232, 29);
             favoriteName.TabIndex = 6;
             // 
+            // ssBottomStatus
+            // 
+            ssBottomStatus.Location = new Point(0, 643);
+            ssBottomStatus.Name = "ssBottomStatus";
+            ssBottomStatus.Size = new Size(1064, 22);
+            ssBottomStatus.TabIndex = 7;
+            ssBottomStatus.Text = "statusStrip1";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(957, 665);
+            ClientSize = new Size(1064, 665);
+            Controls.Add(ssBottomStatus);
             Controls.Add(favoriteName);
             Controls.Add(urlComboBox);
             Controls.Add(favoriteLabel);
@@ -194,7 +192,6 @@
             Controls.Add(reflesh);
             Controls.Add(forward);
             Controls.Add(rollback);
-            Controls.Add(urlSelect);
             Controls.Add(btRssGet);
             Name = "Form1";
             Text = "RSSリーダー";
@@ -207,7 +204,6 @@
         private Button btRssGet;
         private ListBox lbTitles;
         private Microsoft.Web.WebView2.WinForms.WebView2 wvRssLink;
-        private Button urlSelect;
         private Button urlClear;
         private Button rollback;
         private Button forward;
@@ -217,5 +213,6 @@
         private Button favoriteRemove;
         private ComboBox urlComboBox;
         private ComboBox favoriteName;
+        private StatusStrip ssBottomStatus;
     }
 }
