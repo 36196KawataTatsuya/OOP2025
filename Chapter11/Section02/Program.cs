@@ -3,14 +3,24 @@
 namespace Section02 {
     internal class Program {
         static void Main(string[] args) {
-            var text = "private List<string> result = new List<string>();";
-            bool isMatch = Regex.IsMatch(text, @"\(\);$");
+            var strings = new[] {
+                "Microsoft Windows",
+                "windows",
+                "windows Server",
+                "Windows",
+            };
+            var regex = new Regex(@"^(W|w)indows$");
+            var count = strings.Count(s => regex.IsMatch(s));
+            Console.WriteLine($"{count}行と一致");
 
-            if (isMatch) {
-                Console.WriteLine(";で終わっています");
-            } else {
-                Console.WriteLine(";で終わっていません");
+            //パターンと完全一致している文字列を出力
+            foreach (var s in strings) {
+                if (regex.IsMatch(s)) {
+                    Console.WriteLine($"{s}");
+                }
             }
+            //LINQを使った場合
+            //strings.ToList().ForEach(s => {if(regex.IsMatch(s)){Console.WriteLine($"{s}");}});
         }
     }
 }
