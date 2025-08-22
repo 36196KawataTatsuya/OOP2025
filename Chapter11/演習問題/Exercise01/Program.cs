@@ -12,11 +12,19 @@ namespace Exercise01 {
             Console.WriteLine(IsPhoneNumber("A090-9111-1234"));
             Console.WriteLine(IsPhoneNumber("090-911-1234"));
             Console.WriteLine(IsPhoneNumber("090-1911-234"));
+            Console.WriteLine(IsPhoneNumber("090-9111-1234-"));
+            Console.WriteLine(IsPhoneNumber("090-12345-6789"));
+            Console.WriteLine(IsPhoneNumber("090-1234-56789"));
+            Console.WriteLine(IsPhoneNumber("090 1234 5678"));
+            Console.WriteLine(IsPhoneNumber("090-abcd-efgh"));
+            Console.WriteLine(IsPhoneNumber(" 090-1234-5678"));
+            Console.WriteLine(IsPhoneNumber(""));
+            Console.WriteLine(IsPhoneNumber("09012345678"));
 
         }
 
         private static bool IsPhoneNumber(string v) {
-            return Regex.IsMatch(v, @"^0[7-9]0-\d{4}-\d{4}$");    
+            return Regex.IsMatch(v, @"^0[7-9]0-\d{4}-\d{4}$");
         }
 
     }
