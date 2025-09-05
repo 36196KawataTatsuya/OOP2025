@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SampleSlider"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SampleSlider" Height="450" Width="800">
     <StackPanel>
         <Slider x:Name="SampleSlider"/>
-        <Label Content="{Binding ElementName=SampleSlider, Path=Value}"/>
+        <TextBox Text="{Binding ElementName=SampleSlider, Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
     </StackPanel>
 </Window>
