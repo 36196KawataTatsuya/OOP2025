@@ -22,6 +22,7 @@ namespace SampleApplication {
             InitializeComponent();
         }
 
+        //Window読み込み時にTextBox系の初期化
         private void Window_Loaded(object sender, RoutedEventArgs e) {
             checkBoxTextBlock.Text = "未チェック";
             colorText.Text = "未指定";
