@@ -11,15 +11,31 @@ namespace ColorChecker {
         private readonly Dictionary<string, Color> colorSamples = new Dictionary<string, Color>
         {
             { "赤", Colors.Red },
-            { "青", Colors.Blue },
             { "緑", Colors.Green },
+            { "青", Colors.Blue },
             { "黄", Colors.Yellow },
             { "シアン", Colors.Cyan },
             { "マゼンタ", Colors.Magenta },
             { "白", Colors.White },
-            { "黒", Colors.Black },
             { "灰色", Colors.Gray },
-            { "オレンジ", Colors.Orange }
+            { "黒", Colors.Black },
+            { "オレンジ", Colors.Orange },
+            { "紫", Colors.Purple },
+            { "茶色", Colors.Brown },
+            { "ピンク", Colors.Pink },
+            { "黄緑", Colors.LimeGreen },
+            { "水色", Colors.SkyBlue },
+            { "紺", Colors.Navy },
+            { "金色", Colors.Gold },
+            { "銀色", Colors.Silver },
+            { "ベージュ", Colors.Beige },
+            { "深紅", Colors.Crimson },
+            { "オリーブ", Colors.Olive },
+            { "ターコイズ", Colors.Turquoise },
+            { "藍色", Colors.Indigo },
+            { "すみれ色", Colors.Violet },
+            { "珊瑚色", Colors.Coral },
+            { "サーモン", Colors.Salmon }
         };
 
         private bool isUpdatingFromComboBox = false;
@@ -30,13 +46,9 @@ namespace ColorChecker {
         }
 
         private void InitializeColorSamples() {
-            foreach (var sample in colorSamples) {
-                var comboBoxItem = new ComboBoxItem {
-                    Content = sample.Key,
-                    Tag = sample.Value
-                };
-                colorListComboBox.Items.Add(comboBoxItem);
-            }
+            colorListComboBox.ItemsSource = colorSamples;
+            // The line below was removed to fix the error.
+            // colorListComboBox.DisplayMemberPath = "Key"; 
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e) {
@@ -67,12 +79,11 @@ namespace ColorChecker {
             }
         }
 
-        private ComboBoxItem FindMatchingColor(Color targetColor) {
-            foreach (ComboBoxItem item in colorListComboBox.Items) {
-                if (item.Tag is Color color &&
-                    color.R == targetColor.R &&
-                    color.G == targetColor.G &&
-                    color.B == targetColor.B) {
+        private object FindMatchingColor(Color targetColor) {
+            foreach (KeyValuePair<string, Color> item in colorListComboBox.Items) {
+                if (item.Value.R == targetColor.R &&
+                    item.Value.G == targetColor.G &&
+                    item.Value.B == targetColor.B) {
                     return item;
                 }
             }
@@ -80,18 +91,18 @@ namespace ColorChecker {
         }
 
         private void colorListComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (colorListComboBox.SelectedItem is ComboBoxItem selectedItem) {
-                if (selectedItem.Tag is Color selectedColor) {
-                    isUpdatingFromComboBox = true;
+            if (colorListComboBox.SelectedItem is KeyValuePair<string, Color> selectedItem) {
+                Color selectedColor = selectedItem.Value;
 
-                    redSlider.Value = selectedColor.R;
-                    greenSlider.Value = selectedColor.G;
-                    blueSlider.Value = selectedColor.B;
+                isUpdatingFromComboBox = true;
 
-                    isUpdatingFromComboBox = false;
+                redSlider.Value = selectedColor.R;
+                greenSlider.Value = selectedColor.G;
+                blueSlider.Value = selectedColor.B;
 
-                    colorPreviewBorder.Background = new SolidColorBrush(selectedColor);
-                }
+                isUpdatingFromComboBox = false;
+
+                colorPreviewBorder.Background = new SolidColorBrush(selectedColor);
             }
         }
 
@@ -105,10 +116,20 @@ namespace ColorChecker {
             byte r = (byte)redSlider.Value;
             byte g = (byte)greenSlider.Value;
             byte b = (byte)blueSlider.Value;
+            Color newColor = Color.FromRgb(r, g, b);
+
+            string colorName = colorSamples.FirstOrDefault(x => x.Value == newColor).Key;
+
+            string displayText;
+            if (colorName != null) {
+                displayText = colorName;
+            } else {
+                displayText = $"R:{r} G:{g} B:{b}";
+            }
 
             colorListBox.Items.Add(new ColorEntry {
-                Color = Color.FromRgb(r, g, b),
-                RgbText = $"R:{r} G:{g} B:{b}"
+                Color = newColor,
+                RgbText = displayText
             });
 
             colorListBox.ScrollIntoView(colorListBox.Items[colorListBox.Items.Count - 1]);
