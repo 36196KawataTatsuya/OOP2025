@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -38,12 +39,16 @@ namespace ColorChecker {
             { "サーモン", Colors.Salmon }
         };
 
-        // UIがコードによって更新されているかを示すフラグ (イベントの無限ループを防ぐため)
         private bool isUpdatingUI = false;
+
+        public ObservableCollection<ColorEntry> StockedColors { get; set; }
 
         public MainWindow() {
             InitializeComponent();
             InitializeColorSamples();
+
+            StockedColors = new ObservableCollection<ColorEntry>();
+            colorListBox.ItemsSource = StockedColors;
         }
 
         private void InitializeColorSamples() {
@@ -57,9 +62,7 @@ namespace ColorChecker {
         }
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) {
-            if (isUpdatingUI) {
-                return;
-            }
+            if (isUpdatingUI) return;
 
             byte r = (byte)redSlider.Value;
             byte g = (byte)greenSlider.Value;
@@ -80,9 +83,7 @@ namespace ColorChecker {
 
         private object FindMatchingColor(Color targetColor) {
             foreach (KeyValuePair<string, Color> item in colorListComboBox.Items) {
-                if (item.Value.R == targetColor.R &&
-                    item.Value.G == targetColor.G &&
-                    item.Value.B == targetColor.B) {
+                if (item.Value.R == targetColor.R && item.Value.G == targetColor.G && item.Value.B == targetColor.B) {
                     return item;
                 }
             }
@@ -94,13 +95,10 @@ namespace ColorChecker {
                 Color selectedColor = selectedItem.Value;
 
                 isUpdatingUI = true;
-
                 redSlider.Value = selectedColor.R;
                 greenSlider.Value = selectedColor.G;
                 blueSlider.Value = selectedColor.B;
-
                 colorPreviewBorder.Background = new SolidColorBrush(selectedColor);
-
                 isUpdatingUI = false;
             }
         }
@@ -118,54 +116,65 @@ namespace ColorChecker {
             Color newColor = Color.FromRgb(r, g, b);
 
             string colorName = colorSamples.FirstOrDefault(x => x.Value == newColor).Key;
+            string displayText = colorName ?? $"R:{r} G:{g} B:{b}";
 
-            string displayText;
-            if (colorName != null) {
-                displayText = colorName;
-            } else {
-                displayText = $"R:{r} G:{g} B:{b}";
+            StockedColors.Add(new ColorEntry { Color = newColor, RgbText = displayText });
+
+            if (StockedColors.Any()) {
+                colorListBox.ScrollIntoView(StockedColors.Last());
             }
-
-            colorListBox.Items.Add(new ColorEntry {
-                Color = newColor,
-                RgbText = displayText
-            });
-
-            colorListBox.ScrollIntoView(colorListBox.Items[colorListBox.Items.Count - 1]);
         }
 
-        // ▼▼▼ 【ここから追加】 ▼▼▼
         private void colorListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            // ListBoxの項目が選択された場合
             if (colorListBox.SelectedItem is ColorEntry selectedEntry) {
                 Color selectedColor = selectedEntry.Color;
-
-                // isUpdatingUIフラグを立て、他のイベントが連鎖的に発生するのを防ぐ
                 isUpdatingUI = true;
 
-                // スライダーの値を更新
                 redSlider.Value = selectedColor.R;
                 greenSlider.Value = selectedColor.G;
                 blueSlider.Value = selectedColor.B;
-
-                // 色のプレビューを更新
                 colorPreviewBorder.Background = new SolidColorBrush(selectedColor);
 
-                // ComboBox内で一致する色を探して選択状態にする
                 var matchingItem = FindMatchingColor(selectedColor);
                 if (matchingItem != null) {
                     colorListComboBox.SelectedItem = matchingItem;
                 } else {
-                    // 一致するものがなければ選択を解除
                     colorListComboBox.SelectedItem = null;
                     colorListComboBox.Text = string.Empty;
                 }
-
-                // UIの更新が終わったのでフラグを解除
                 isUpdatingUI = false;
             }
         }
-        // ▲▲▲ 【ここまで追加】 ▲▲▲
+
+        // ▼▼▼ 【ここからが新しいボタン用のメソッド】 ▼▼▼
+
+        private void MoveUpButton_Click(object sender, RoutedEventArgs e) {
+            if (colorListBox.SelectedItem is ColorEntry selectedEntry) {
+                int currentIndex = StockedColors.IndexOf(selectedEntry);
+                if (currentIndex > 0) {
+                    StockedColors.Move(currentIndex, currentIndex - 1);
+                    // 移動後も選択状態を維持
+                    colorListBox.SelectedItem = selectedEntry;
+                }
+            }
+        }
+
+        private void MoveDownButton_Click(object sender, RoutedEventArgs e) {
+            if (colorListBox.SelectedItem is ColorEntry selectedEntry) {
+                int currentIndex = StockedColors.IndexOf(selectedEntry);
+                if (currentIndex >= 0 && currentIndex < StockedColors.Count - 1) {
+                    StockedColors.Move(currentIndex, currentIndex + 1);
+                    // 移動後も選択状態を維持
+                    colorListBox.SelectedItem = selectedEntry;
+                }
+            }
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e) {
+            if (colorListBox.SelectedItem is ColorEntry selectedEntry) {
+                StockedColors.Remove(selectedEntry);
+            }
+        }
     }
 
     public class ColorEntry {
