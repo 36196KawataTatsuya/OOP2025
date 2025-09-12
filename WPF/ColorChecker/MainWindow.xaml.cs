@@ -204,6 +204,15 @@ namespace ColorChecker {
                 StockedColors.Remove(selectedEntry);
             }
         }
+
+        //Deleteキーによるアイテム削除に対応
+        private void colorListBox_KeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Delete) {
+                if (colorListBox.SelectedItem is ColorEntry selectedEntry) {
+                    StockedColors.Remove(selectedEntry);
+                }
+            }
+        }
     }
 
     //色の基本情報    

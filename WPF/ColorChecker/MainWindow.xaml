@@ -84,7 +84,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--    色履歴を表示するリストボックス     -->
-                <ListBox x:Name="colorListBox" Grid.Column="0" SelectionChanged="colorListBox_SelectionChanged">
+                <ListBox x:Name="colorListBox" Grid.Column="0" SelectionChanged="colorListBox_SelectionChanged" KeyDown="colorListBox_KeyDown">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
