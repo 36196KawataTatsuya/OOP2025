@@ -134,7 +134,7 @@ namespace ColorChecker {
 
             //登録済みカラーの再登録を防ぎ、エラーメッセージを表示する
             if (StockedColors.Any(entry => entry.Color.R == newColor.R && entry.Color.G == newColor.G && entry.Color.B == newColor.B)) {
-                MessageBox.Show("既に登録済みの色の再登録はできません\n別の色を登録するか、登録済みの色を削除してください", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("既に登録済みの色の再登録はできません\n別の色を登録するか、登録済みの色を削除してください", "インフォメーション", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 return;
             }
 
