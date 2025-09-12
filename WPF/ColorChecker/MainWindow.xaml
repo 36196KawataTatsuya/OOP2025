@@ -1,4 +1,4 @@
-﻿<Window x:Class="ColorChecker.MainWindow"
+﻿    <Window x:Class="ColorChecker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -16,7 +16,10 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        
+        <!--    色参照用ボーダー    -->
         <Border x:Name="colorPreviewBorder" Grid.Row="0" Margin="12" Background="Black" BorderThickness="1"/>
+        
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -29,19 +32,23 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="30" />
             </Grid.ColumnDefinitions>
-
+            
+            <!--    赤色のラベルとスライダーと数値表示テキストボックス   -->
             <Label x:Name="redLabel" Grid.Row="0" Grid.Column="0" Content="R" VerticalAlignment="Center" Margin="4" FontSize="16"/>
             <Slider Grid.Row="0" Grid.Column="1" x:Name="redSlider" Minimum="0" Maximum="255" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Width="120" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Center"/>
             <TextBox x:Name="redTextBox" Grid.Row="0" Grid.Column="2" Text="{Binding Value, ElementName=redSlider, Mode=TwoWay, StringFormat=\{0:0\}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Right" PreviewTextInput="TextBox_PreviewTextInput"/>
 
+            <!--    緑色のラベルとスライダーと数値表示テキストボックス   -->
             <Label x:Name="greenLabel" Grid.Row="1" Grid.Column="0" Content="G" VerticalAlignment="Center" Margin="4" FontSize="16"/>
             <Slider Grid.Row="1" Grid.Column="1" x:Name="greenSlider" Minimum="0" Maximum="255" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Width="120" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Center"/>
             <TextBox x:Name="greenTextBox" Grid.Row="1" Grid.Column="2" Text="{Binding Value, ElementName=greenSlider, Mode=TwoWay, StringFormat=\{0:0\}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Right" PreviewTextInput="TextBox_PreviewTextInput"/>
 
+            <!--    青色のラベルとスライダーと数値表示テキストボックス   -->
             <Label x:Name="blueLabel" Grid.Row="2" Grid.Column="0" Content="B" VerticalAlignment="Center" Margin="4" FontSize="16"/>
             <Slider Grid.Row="2" Grid.Column="1" x:Name="blueSlider" Minimum="0" Maximum="255" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="1" Width="120" ValueChanged="Slider_ValueChanged" HorizontalAlignment="Center"/>
             <TextBox x:Name="blueTextBox" Grid.Row="2" Grid.Column="2" Text="{Binding Value, ElementName=blueSlider, Mode=TwoWay, StringFormat=\{0:0\}, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" Margin="0" HorizontalAlignment="Right" PreviewTextInput="TextBox_PreviewTextInput"/>
 
+            <!--    カラーリスト用のラベルとコンボボックス     -->
             <Label x:Name="selectLabel" Grid.Row="3" Grid.Column="0" Content="選択" VerticalAlignment="Center" Margin="0" FontSize="14"/>
             <ComboBox x:Name="colorListComboBox" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="5" SelectionChanged="colorListComboBox_SelectionChanged">
                 <ComboBox.ItemTemplate>
@@ -52,19 +59,23 @@
                                     <SolidColorBrush Color="{Binding Value}" />
                                 </Rectangle.Fill>
                             </Rectangle>
+                            
                             <TextBlock Text="{Binding Key}" VerticalAlignment="Center" />
                         </StackPanel>
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
+            
         </Grid>
+        
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Button x:Name="saveColorButton" Grid.Row="0" Content="STOCK" VerticalAlignment="Center" Margin="0,10,0,0" Height="30" Width="175" Click="saveColorButton_Click" HorizontalAlignment="Center" FontSize="20"/>
+            <!--    色ストック用のボタン配置    --> 
+            <Button x:Name="saveColorButton" Grid.Row="0" Content="STOCK" VerticalAlignment="Center" Margin="0,10,0,0" Height="30" Width="175" Click="saveColorButton_Click" HorizontalAlignment="Center" FontSize="20" Grid.Column="1"/>
 
             <Grid Grid.Row="1" Margin="10">
                 <Grid.ColumnDefinitions>
@@ -72,6 +83,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
+                <!--    色履歴を表示するリストボックス     -->
                 <ListBox x:Name="colorListBox" Grid.Column="0" SelectionChanged="colorListBox_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
@@ -81,17 +93,20 @@
                                         <SolidColorBrush Color="{Binding Color}" />
                                     </Rectangle.Fill>
                                 </Rectangle>
+                                
                                 <TextBlock Text="{Binding RgbText}" VerticalAlignment="Center" />
                             </StackPanel>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
 
+                <!--    データ操作ボタン入りスタパ   -->
                 <StackPanel Grid.Column="1" Margin="5,0,0,0" VerticalAlignment="Center">
                     <Button x:Name="MoveUpButton" Content="▲" Width="25" Height="25" Margin="2" Click="MoveUpButton_Click"/>
                     <Button x:Name="MoveDownButton" Content="▼" Width="25" Height="25" Margin="2" Click="MoveDownButton_Click"/>
                     <Button x:Name="DeleteButton" Content="✕" Width="25" Height="25" Margin="2,20,2,2" Click="DeleteButton_Click" FontWeight="Bold"/>
                 </StackPanel>
+                
             </Grid>
         </Grid>
     </Grid>
