@@ -6,10 +6,126 @@
         xmlns:local="clr-namespace:CustomerApp"
         mc:Ignorable="d"
         Title="顧客管理アプリケーション" Height="650" Width="900"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="#FFF0F2F5"
+        x:Name="mainWindow">
 
     <Window.Resources>
         <local:ByteArrayToBitmapImageConverter x:Key="ByteArrayToImageConverter" />
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="8" />
+            <Setter Property="BorderBrush" Value="#FFABADB3" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5,5,5,0" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="PrimaryButton">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="Background" Value="#FF0078D4" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF005A9E" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#FFC6C6C6" />
+                                <Setter Property="Foreground" Value="#FF6D6D6D" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="UpdateButton" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FF107C10" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF0B530B" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="CancelButton" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FFA4262C" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF7C1C21" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="MoveButton" BasedOn="{StaticResource PrimaryButton}">
+            <Setter Property="Background" Value="#FF505050" />
+            <Setter Property="FontFamily" Value="Segoe UI Symbol" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="Width" Value="30" />
+            <Setter Property="Height" Value="30" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF303030" />
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Background" Value="#FFC6C6C6" />
+                                <Setter Property="Foreground" Value="#FF6D6D6D" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
 
     <Grid Margin="10">
@@ -19,59 +135,100 @@
             <ColumnDefinition Width="5*" MinWidth="400" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
+        <Border Grid.Column="0" Background="White" CornerRadius="8" Padding="10">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
+
                 <StackPanel Grid.Row="0">
-                    <Label Content="氏名 (必須)" />
-                    <TextBox x:Name="txtName" Margin="5" />
-                    <Label Content="電話番号 (必須)" />
-                    <TextBox x:Name="txtPhone" Margin="5" />
-                    <Label Content="住所" />
-                    <TextBox x:Name="txtAddress" TextWrapping="Wrap" MinHeight="60" AcceptsReturn="True" Margin="5"/>
+                    <Label Content="氏名 (必須)" FontSize="14"/>
+                    <TextBox x:Name="txtName" />
+                    <Label Content="電話番号 (必須)" FontSize="14"/>
+                    <TextBox x:Name="txtPhone" />
+                    <Label Content="住所" FontSize="14"/>
+                    <TextBox x:Name="txtAddress" TextWrapping="Wrap" MinHeight="60" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
                 </StackPanel>
+
                 <Grid Grid.Row="1" Margin="5,10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Button x:Name="btnSelectImage" Content="画像を選択..." 
-                            HorizontalAlignment="Left" 
-                            Click="btnSelectImage_Click" Margin="5" Padding="5" />
-                    <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,5,0,0">
-                        <Image x:Name="imgPreview" Stretch="Uniform" Margin="5" />
+                    <Button x:Name="btnSelectImage" Content="画像を選択..."
+                            Style="{StaticResource PrimaryButton}"
+                            HorizontalAlignment="Left" FontSize="18"
+                            Click="btnSelectImage_Click" />
+                    <Border Grid.Row="1" BorderBrush="#FFABADB3" BorderThickness="1" CornerRadius="4" Margin="0,5,0,0" Background="#FFF9F9F9">
+                        <Image x:Name="imgPreview" Stretch="Uniform" Margin="3" />
                     </Border>
                 </Grid>
+
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+
                     <StackPanel x:Name="pnlNormalModeButtons" Grid.Column="0" Orientation="Horizontal">
-                        <Button x:Name="btnRegister" Content="登録" Click="btnRegister_Click" Margin="5" Padding="5"/>
-                        <Button x:Name="btnDelete" Content="削除" Click="btnDelete_Click" Margin="5" Padding="5"/>
-                        <Button x:Name="btnEdit" Content="編集" Click="btnEdit_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnRegister" Content="登録" Style="{StaticResource PrimaryButton}" Click="btnRegister_Click" FontSize="16"/>
+                        <Button x:Name="btnDelete" Content="削除" Style="{StaticResource CancelButton}" Click="btnDelete_Click" FontSize="16"/>
+                        <Button x:Name="btnEdit" Content="編集" Style="{StaticResource PrimaryButton}" Background="#FF606060" Click="btnEdit_Click" FontSize="16"/>
                     </StackPanel>
+
                     <StackPanel x:Name="pnlEditModeButtons" Grid.Column="0" Orientation="Horizontal" Visibility="Collapsed">
-                        <Button x:Name="btnUpdate" Content="再登録" Click="btnUpdate_Click" Margin="5" Padding="5"/>
-                        <Button x:Name="btnCancel" Content="キャンセル" Click="btnCancel_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnUpdate" Content="再登録" Style="{StaticResource UpdateButton}" Click="btnUpdate_Click" FontSize="16"/>
+                        <Button x:Name="btnCancel" Content="キャンセル" Style="{StaticResource CancelButton}" Click="btnCancel_Click" FontSize="16"/>
                     </StackPanel>
+
                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
-                        <Button x:Name="btnMoveUp" Content="▲" Click="btnMoveUp_Click" Margin="5" Padding="5"/>
-                        <Button x:Name="btnMoveDown" Content="▼" Click="btnMoveDown_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnMoveUp" Content="▲" Style="{StaticResource MoveButton}" Click="btnMoveUp_Click" />
+                        <Button x:Name="btnMoveDown" Content="▼" Style="{StaticResource MoveButton}" Click="btnMoveDown_Click" />
                     </StackPanel>
                 </Grid>
             </Grid>
         </Border>
 
-        <GridSplitter Grid.Column="1" Width="5" Background="LightGray" ResizeBehavior="PreviousAndNext" />
+        <GridSplitter Grid.Column="1" Width="5" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
-        <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Padding="5">
-            <ListView x:Name="customerListView" Margin="5" SelectionChanged="customerListView_SelectionChanged">
+        <Border Grid.Column="2" Background="White" CornerRadius="8">
+            <ListView x:Name="customerListView" Margin="5" BorderThickness="0" SelectionChanged="customerListView_SelectionChanged">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="Margin" Value="0,0,0,5" />
+                        <Setter Property="BorderBrush" Value="#FFE0E0E0" />
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border x:Name="Bd"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            Background="{TemplateBinding Background}"
+                                            Padding="{TemplateBinding Padding}"
+                                            CornerRadius="4"
+                                            SnapsToDevicePixels="true">
+                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="true">
+                                            <Setter TargetName="Bd" Property="Background" Value="#FFDDEEFF" />
+                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FF0078D4" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter TargetName="Bd" Property="Background" Value="#FFF0F8FF" />
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
 
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -81,24 +238,55 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="1" Width="80" Height="80" Margin="10,0,0,0" 
-                                    Background="#FFF0F0F0" VerticalAlignment="Center">
-                                <Image Source="{Binding Picture, Converter={StaticResource ByteArrayToImageConverter}}" 
+                            <Border Grid.Column="1" Width="80" Height="80" Margin="10,0,0,0"
+                                    Background="#FFF0F0F0" CornerRadius="4" VerticalAlignment="Center">
+                                <Image Source="{Binding Picture, Converter={StaticResource ByteArrayToImageConverter}}"
                                        Stretch="UniformToFill" />
                             </Border>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="{Binding Id, StringFormat='ID: {0}'}" 
-                                           FontSize="11" Foreground="Gray" />
-                                <TextBlock Text="{Binding Name}" 
-                                           FontSize="18" FontWeight="Bold" />
-                                <TextBlock Text="{Binding Phone}" FontSize="13" />
-                                <TextBlock Text="{Binding Address}" FontSize="13" TextWrapping="Wrap" />
-                            </StackPanel>
-                        </Grid> 
+                            <Grid Grid.Column="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding Id, StringFormat='ID: {0}'}"
+                                               FontSize="11" FontWeight="SemiBold" Foreground="#FF606060"
+                                               VerticalAlignment="Top" Margin="0,0,10,0" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Name}"
+                                               FontSize="18" FontWeight="Bold"
+                                               VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+                                </Grid>
+
+                                <TextBlock Grid.Row="1" Text="{Binding Phone}"
+                                           FontSize="13" Foreground="#FF333333" Margin="0,5,0,0" />
+
+                                <TextBlock Grid.Row="2" Text="{Binding Address}"
+                                           FontSize="13" Foreground="#FF333333" Margin="0,2,0,0"
+                                           TextWrapping="Wrap" />
+                            </Grid>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Border>
+
+        <Popup x:Name="notificationPopup"
+               Placement="Center"
+               PlacementTarget="{Binding ElementName=mainWindow}"
+               AllowsTransparency="True">
+            <Border Background="#DD333333" CornerRadius="8" Padding="15,10" Margin="10">
+                <TextBlock x:Name="popupText" Foreground="White" FontSize="14" />
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Opacity="0.3" BlurRadius="10" />
+                </Border.Effect>
+            </Border>
+        </Popup>
     </Grid>
 </Window>
