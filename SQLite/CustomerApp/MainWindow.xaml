@@ -5,8 +5,27 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomerApp"
         mc:Ignorable="d"
-        Title="顧客管理アプリケーション" Height="600" Width="800">
-    <Grid>
+        Title="顧客管理アプリケーション" Height="600" Width="800"
+        WindowStartupLocation="CenterScreen">
 
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" MinWidth="300" />
+            <ColumnDefinition Width="5" />
+            <ColumnDefinition Width="5*" MinWidth="400" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="5">
+            <StackPanel>
+                <Label Content="入力エリア（後で作成）" />
+            </StackPanel>
+        </Border>
+
+        <GridSplitter Grid.Column="1" Width="5" Background="LightGray" ResizeBehavior="PreviousAndNext" />
+
+        <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Padding="5">
+            <ListView x:Name="customerListView">
+            </ListView>
+        </Border>
     </Grid>
 </Window>

@@ -7,23 +7,31 @@ using System.Threading.Tasks;
 
 namespace CustomerApp {
     internal class Customer {
-        [PrimaryKey,AutoIncrement]
+        [PrimaryKey, AutoIncrement]
         public int Id { get; set; }
         /// <summary>
-        /// 名前
+        /// 名前 (必須)
         /// </summary>
         public string Name { get; set; } = string.Empty;
+
         /// <summary>
         /// 電話番号
         /// </summary>
         public string Phone { get; set; } = string.Empty;
+
         /// <summary>
         /// 住所
         /// </summary>
-        public string Address{ get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
+
         /// <summary>
-        /// 画像
+        /// 画像データ
         /// </summary>
         public byte[]? Picture { get; set; }
+
+        /// <summary>
+        /// 表示順序
+        /// </summary>
+        public int DisplayOrder { get; set; }
     }
 }
