@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CustomerApp"
         mc:Ignorable="d"
-        Title="顧客管理アプリケーション" Height="600" Width="800"
+        Title="顧客管理アプリケーション" Height="650" Width="900"
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
@@ -15,16 +15,67 @@
             <ColumnDefinition Width="5*" MinWidth="400" />
         </Grid.ColumnDefinitions>
 
-        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="5">
-            <StackPanel>
-                <Label Content="入力エリア（後で作成）" />
-            </StackPanel>
+        <Border Grid.Column="0" BorderBrush="Gray" BorderThickness="1" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <Label Content="氏名 (必須)" />
+                    <TextBox x:Name="txtName" Margin="5" />
+
+                    <Label Content="電話番号 (必須)" />
+                    <TextBox x:Name="txtPhone" Margin="5" />
+
+                    <Label Content="住所" />
+                    <TextBox x:Name="txtAddress" TextWrapping="Wrap" MinHeight="60" AcceptsReturn="True" Margin="5"/>
+                </StackPanel>
+
+                <Grid Grid.Row="1" Margin="5,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="btnSelectImage" Content="画像を選択..." 
+                            HorizontalAlignment="Left" 
+                            Click="btnSelectImage_Click" Margin="5" Padding="5" />
+                    <Border Grid.Row="1" BorderBrush="Gray" BorderThickness="1" Margin="0,5,0,0">
+                        <Image x:Name="imgPreview" Stretch="Uniform" Margin="5" />
+                    </Border>
+                </Grid>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel x:Name="pnlNormalModeButtons" Grid.Column="0" Orientation="Horizontal">
+                        <Button x:Name="btnRegister" Content="登録" Click="btnRegister_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnDelete" Content="削除" Click="btnDelete_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnEdit" Content="編集" Click="btnEdit_Click" Margin="5" Padding="5"/>
+                    </StackPanel>
+
+                    <StackPanel x:Name="pnlEditModeButtons" Grid.Column="0" Orientation="Horizontal" Visibility="Collapsed">
+                        <Button x:Name="btnUpdate" Content="再登録" Click="btnUpdate_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnCancel" Content="キャンセル" Click="btnCancel_Click" Margin="5" Padding="5"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button x:Name="btnMoveUp" Content="▲" Click="btnMoveUp_Click" Margin="5" Padding="5"/>
+                        <Button x:Name="btnMoveDown" Content="▼" Click="btnMoveDown_Click" Margin="5" Padding="5"/>
+                    </StackPanel>
+                </Grid>
+            </Grid>
         </Border>
 
         <GridSplitter Grid.Column="1" Width="5" Background="LightGray" ResizeBehavior="PreviousAndNext" />
 
         <Border Grid.Column="2" BorderBrush="Gray" BorderThickness="1" Padding="5">
-            <ListView x:Name="customerListView">
+            <ListView x:Name="customerListView" Margin="5" SelectionChanged="customerListView_SelectionChanged">
             </ListView>
         </Border>
     </Grid>
