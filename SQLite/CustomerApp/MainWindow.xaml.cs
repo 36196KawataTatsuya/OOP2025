@@ -1,15 +1,21 @@
 ﻿using Microsoft.Win32;
 using SQLite;
 using System;
-using System.Collections.Generic; // List<T>のために必要
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics; // APIエラー確認用
 using System.IO;
 using System.Linq;
+using System.Net.Http; // API通信用
+using System.Net.Http.Headers; // API通信用
+using System.Text.Json; // JSON解析用
+using System.Text.Json.Serialization; // JSON解析用
+using System.Threading.Tasks; // 非同期処理用
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input; // KeyDownイベント用
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-// using System.Xml.Linq; // ← 不要であれば削除 (未使用のusing)
 
 namespace CustomerApp {
     public partial class MainWindow : Window {
@@ -22,8 +28,13 @@ namespace CustomerApp {
 
         private Customer? _selectedCustomer = null;
 
-        // ポップアップ通知用のタイマー
         private DispatcherTimer _popupTimer;
+
+        // API通信用のクライアント (静的が推奨)
+        private static readonly HttpClient _httpClient = new HttpClient();
+
+        // 検索ソート順 (true: 降順, false: 昇順)
+        private bool _isSortDescending = true;
 
         public MainWindow() {
             InitializeComponent();
@@ -35,90 +46,117 @@ namespace CustomerApp {
             _customers = new ObservableCollection<Customer>();
             customerListView.ItemsSource = _customers;
 
-            // ポップアップ通知タイマーの初期化
             InitializePopupTimer();
+
+            // APIクライアントの初期設定
+            _httpClient.BaseAddress = new Uri("https://jp-postal-code-api.ttskch.com/api/v1/");
+            _httpClient.DefaultRequestHeaders.Accept.Clear();
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             LoadCustomers();
             UpdateButtonStates();
         }
 
-        /// <summary>
-        /// ポップアップ用タイマーを初期化
-        /// </summary>
         private void InitializePopupTimer() {
             _popupTimer = new DispatcherTimer();
-            // タイマーが止まった時にポップアップを閉じる
             _popupTimer.Tick += (s, e) => {
                 notificationPopup.IsOpen = false;
                 _popupTimer.Stop();
             };
-            // 表示時間は2.5秒に設定
             _popupTimer.Interval = TimeSpan.FromSeconds(2.5);
         }
 
-        /// <summary>
-        /// 自動で消える通知を表示する
-        /// </summary>
-        /// <param name="message">表示するメッセージ</param>
         private void ShowNotification(string message) {
             popupText.Text = message;
-            notificationPopup.IsOpen = true; // Popupを表示
+            notificationPopup.IsOpen = true;
 
-            // タイマーを開始
             _popupTimer.Stop();
             _popupTimer.Start();
         }
 
         private void InitializeDatabase() {
-            // データベース接続とテーブル作成
             try {
                 _db = new SQLiteConnection(_dbPath);
                 _db.CreateTable<Customer>();
             }
-            // データベース初期化処理に例外処理を追加
             catch (Exception ex) {
                 MessageBox.Show($"データベースの初期化に失敗しました: {ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
                 Application.Current.Shutdown();
             }
         }
 
-        private void LoadCustomers() {
-            // データベースから顧客データを読み込み、表示用コレクションを更新
+        /// <summary>
+        /// 顧客リストを読み込みます。検索語が指定されている場合はフィルタリングとソートを行います。
+        /// </summary>
+        /// <param name="searchTerm">検索文字列 (オプション)</param>
+        private void LoadCustomers(string? searchTerm = null) {
             try {
-                // DisplayOrderが0のデータを処理するロジック
                 var allCustomers = _db.Table<Customer>().ToList();
+                bool needsUpdate = false;
+
+                // --- DisplayOrderが0のデータを処理 (既存ロジック) ---
                 var customersWithZeroOrder = allCustomers.Where(c => c.DisplayOrder == 0).ToList();
-                bool needsUpdate = customersWithZeroOrder.Any();
-                if (needsUpdate) {
+                if (customersWithZeroOrder.Any()) {
+                    needsUpdate = true;
                     int maxOrder = allCustomers.Where(c => c.DisplayOrder > 0)
-                                              .Select(c => c.DisplayOrder)
-                                              .DefaultIfEmpty(0).Max();
+                                               .Select(c => c.DisplayOrder)
+                                               .DefaultIfEmpty(0).Max();
+
                     foreach (var customer in customersWithZeroOrder.OrderBy(c => c.Id)) {
                         maxOrder++;
                         customer.DisplayOrder = maxOrder;
                         _db.Update(customer);
                     }
+                }
+
+                if (needsUpdate) {
                     allCustomers = _db.Table<Customer>().ToList(); // 再読み込み
                 }
 
-                // DisplayOrderでソート
-                var sortedCustomers = allCustomers.OrderBy(c => c.DisplayOrder).ToList();
+                // --- 検索とソート処理 ---
+                IEnumerable<Customer> finalCustomers;
 
+                if (string.IsNullOrWhiteSpace(searchTerm)) {
+                    // 検索なし: DisplayOrderでソート
+                    finalCustomers = allCustomers.OrderBy(c => c.DisplayOrder);
+                } else {
+                    // 検索あり: フィルタリング
+                    finalCustomers = allCustomers.Where(c =>
+                        (c.Name != null && c.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                        (c.Phone != null && c.Phone.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) ||
+                        (c.Address != null && c.Address.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    );
+
+                    // 検索結果のソート (氏名 -> 電話番号 -> 住所)
+                    if (_isSortDescending) {
+                        finalCustomers = finalCustomers
+                            .OrderByDescending(c => c.Name)
+                            .ThenByDescending(c => c.Phone)
+                            .ThenByDescending(c => c.Address);
+                    } else {
+                        finalCustomers = finalCustomers
+                            .OrderBy(c => c.Name)
+                            .ThenBy(c => c.Phone)
+                            .ThenBy(c => c.Address);
+                    }
+                }
+
+                // リストを更新
                 _customers.Clear();
-                foreach (var customer in sortedCustomers) {
+                foreach (var customer in finalCustomers.ToList()) {
                     _customers.Add(customer);
                 }
             }
             catch (Exception ex) {
                 MessageBox.Show($"データ読み込みエラー: {ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+
+            // 検索状態に応じてボタンの状態を更新
+            UpdateButtonStates();
         }
 
-        /// <summary>
-        /// 「登録」ボタンクリック
-        /// </summary>
+
         private void btnRegister_Click(object sender, RoutedEventArgs e) {
-            // 氏名と電話番号の必須チェック
             if (string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtPhone.Text)) {
                 ShowNotification("氏名と電話番号は必須入力です");
                 return;
@@ -141,21 +179,16 @@ namespace CustomerApp {
                 ClearInputFields();
             }
             catch (Exception ex) {
-                // DBエラーは重要なため、MessageBoxのままに設定
                 MessageBox.Show($"登録エラー: {ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        /// <summary>
-        /// 「削除」ボタンクリック
-        /// </summary>
         private void btnDelete_Click(object sender, RoutedEventArgs e) {
             if (customerListView.SelectedItem is not Customer selectedCustomer) {
                 ShowNotification("削除する顧客を選択してください");
                 return;
             }
 
-            // 削除は重要な操作なため、MessageBoxのままに設定
             if (_deleteConfirmationRequired) {
                 var result = MessageBox.Show(
                     $"「{selectedCustomer.Name}」のデータを本当に削除しますか？\n(アプリケーションを終了するまで、この確認は再表示されません)",
@@ -169,7 +202,7 @@ namespace CustomerApp {
 
             try {
                 _db.Delete(selectedCustomer);
-                LoadCustomers();
+                LoadCustomers(txtSearch.Text); // 検索状態を維持してリロード
                 ClearInputFields();
             }
             catch (Exception ex) {
@@ -177,9 +210,6 @@ namespace CustomerApp {
             }
         }
 
-        /// <summary>
-        /// 「編集」ボタンクリック
-        /// </summary>
         private void btnEdit_Click(object sender, RoutedEventArgs e) {
             if (customerListView.SelectedItem is not Customer selectedCustomer) {
                 ShowNotification("編集する顧客を選択してください");
@@ -191,18 +221,15 @@ namespace CustomerApp {
             txtName.Text = _selectedCustomer.Name;
             txtPhone.Text = _selectedCustomer.Phone;
             txtAddress.Text = _selectedCustomer.Address;
+            txtZipCode.Text = ""; // 郵便番号は保持しない (必要ならCustomerに追加)
             imgPreview.Source = LoadImageFromByteArray(_selectedCustomer.Picture);
 
             ToggleEditMode(true);
         }
 
-        /// <summary>
-        /// 「再登録」ボタンクリック(編集モード時)
-        /// </summary>
         private void btnUpdate_Click(object sender, RoutedEventArgs e) {
             if (_selectedCustomer == null) return;
 
-            // 氏名と電話番号の必須チェック
             if (string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtPhone.Text)) {
                 ShowNotification("氏名と電話番号は必須入力です");
                 return;
@@ -216,7 +243,7 @@ namespace CustomerApp {
 
                 _db.Update(_selectedCustomer);
 
-                LoadCustomers();
+                LoadCustomers(txtSearch.Text); // 検索状態を維持してリロード
                 ClearInputFields();
                 ToggleEditMode(false);
                 _selectedCustomer = null;
@@ -249,11 +276,9 @@ namespace CustomerApp {
                     _db.Update(selectedCustomer);
                     _db.Update(upperCustomer);
 
-                    // 選択が外れないよう、IDを一時的に保持
                     int selectedId = selectedCustomer.Id;
-                    LoadCustomers(); // リスト再読み込み
+                    LoadCustomers();
 
-                    // 保持していたIDを使って、新しいリストから項目を再選択する
                     var customerToReselect = _customers.FirstOrDefault(c => c.Id == selectedId);
                     if (customerToReselect != null) {
                         customerListView.SelectedItem = customerToReselect;
@@ -262,7 +287,6 @@ namespace CustomerApp {
                 }
                 catch (Exception ex) {
                     MessageBox.Show($"順序変更エラー: {ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                    // エラーが起きたら元に戻す (念のため)
                     (selectedCustomer.DisplayOrder, upperCustomer.DisplayOrder) =
                         (upperCustomer.DisplayOrder, selectedCustomer.DisplayOrder);
                 }
@@ -283,11 +307,9 @@ namespace CustomerApp {
                     _db.Update(selectedCustomer);
                     _db.Update(lowerCustomer);
 
-                    // 選択が外れないよう、IDを一時的に保持
                     int selectedId = selectedCustomer.Id;
-                    LoadCustomers(); // リスト再読み込み
+                    LoadCustomers();
 
-                    // 保持していたIDを使って、新しいリストから項目を再選択する
                     var customerToReselect = _customers.FirstOrDefault(c => c.Id == selectedId);
                     if (customerToReselect != null) {
                         customerListView.SelectedItem = customerToReselect;
@@ -296,7 +318,6 @@ namespace CustomerApp {
                 }
                 catch (Exception ex) {
                     MessageBox.Show($"順序変更エラー: {ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
-                    // エラーが起きたら元に戻す (念のため)
                     (selectedCustomer.DisplayOrder, lowerCustomer.DisplayOrder) =
                         (lowerCustomer.DisplayOrder, selectedCustomer.DisplayOrder);
                 }
@@ -325,21 +346,117 @@ namespace CustomerApp {
         }
 
         private void customerListView_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            // 編集モード中に選択が変わったらキャンセル
             if (_selectedCustomer != null && customerListView.SelectedItem != _selectedCustomer) {
                 btnCancel_Click(sender, e);
             }
             UpdateButtonStates();
         }
 
+        // --- ▼▼▼ 新規追加 (検索・ソート) ▼▼▼ ---
+
+        /// <summary>
+        /// 検索ボックスのテキスト変更イベント
+        /// </summary>
+        private void txtSearch_TextChanged(object sender, TextChangedEventArgs e) {
+            string searchTerm = txtSearch.Text;
+            LoadCustomers(searchTerm);
+        }
+
+        /// <summary>
+        /// ソート順切り替えボタンのクリックイベント
+        /// </summary>
+        private void btnToggleSort_Click(object sender, RoutedEventArgs e) {
+            _isSortDescending = !_isSortDescending;
+            btnToggleSort.Content = _isSortDescending ? "降順" : "昇順";
+            LoadCustomers(txtSearch.Text); // 現在の検索語でリストを再ソート
+        }
+
+        // --- ▼▼▼ 新規追加 (郵便番号検索) ▼▼▼ ---
+
+        /// <summary>
+        /// 郵便番号入力欄でEnterキーが押された
+        /// </summary>
+        private void txtZipCode_KeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter) {
+                SearchAddressFromZipCode();
+            }
+        }
+
+        /// <summary>
+        /// 「住所検索」ボタンが押された
+        /// </summary>
+        private void btnSearchZipCode_Click(object sender, RoutedEventArgs e) {
+            SearchAddressFromZipCode();
+        }
+
+        /// <summary>
+        /// 郵便番号APIを叩いて住所を検索・補完する
+        /// </summary>
+        private async void SearchAddressFromZipCode() {
+            string zipCode = txtZipCode.Text.Trim();
+            if (string.IsNullOrWhiteSpace(zipCode)) {
+                ShowNotification("郵便番号を入力してください");
+                return;
+            }
+
+            // UIを一時的に無効化
+            btnSearchZipCode.IsEnabled = false;
+            btnSearchZipCode.Content = "検索中...";
+            this.Cursor = Cursors.Wait;
+
+            try {
+                // APIリクエスト (例: 1000001)
+                HttpResponseMessage response = await _httpClient.GetAsync($"{zipCode}.json");
+
+                if (response.IsSuccessStatusCode) {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+
+                    // JSONをデシリアライズ
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    var apiResponse = JsonSerializer.Deserialize<ZipCodeApiResponse>(jsonResponse, options);
+
+                    if (apiResponse?.Addresses != null && apiResponse.Addresses.Any()) {
+                        // 最初の住所情報を取得
+                        var address = apiResponse.Addresses.First().Ja;
+                        // 住所を結合してTextBoxに設定
+                        txtAddress.Text = $"{address.Prefecture}{address.Address1}{address.Address2}{address.Address3}{address.Address4}";
+                        ShowNotification("住所を自動入力しました");
+                    } else {
+                        ShowNotification("該当する住所が見つかりません");
+                    }
+                } else {
+                    ShowNotification($"APIエラー: {response.StatusCode}");
+                }
+            }
+            catch (HttpRequestException httpEx) {
+                Debug.WriteLine($"API Request Error: {httpEx.Message}");
+                ShowNotification("APIへの接続に失敗しました");
+            }
+            catch (JsonException jsonEx) {
+                Debug.WriteLine($"JSON Parse Error: {jsonEx.Message}");
+                ShowNotification("API応答の解析に失敗しました");
+            }
+            catch (Exception ex) {
+                Debug.WriteLine($"Unexpected Error: {ex.Message}");
+                MessageBox.Show($"住所検索中に予期せぬエラーが発生しました: {ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally {
+                // UIを元に戻す
+                btnSearchZipCode.IsEnabled = true;
+                btnSearchZipCode.Content = "住所検索";
+                this.Cursor = Cursors.Arrow;
+            }
+        }
+        // --- ▲▲▲ 新規追加 (郵便番号検索) ▲▲▲ ---
+
         #endregion
 
-        // --- ヘルパーメソッド ---
         #region Helper Methods
 
         private void ClearInputFields() {
             txtName.Clear();
             txtPhone.Clear();
+            txtZipCode.Clear(); // 郵便番号欄もクリア
             txtAddress.Clear();
             imgPreview.Source = null;
         }
@@ -361,13 +478,17 @@ namespace CustomerApp {
             bool isSelected = customerListView.SelectedItem != null;
             bool isEditing = _selectedCustomer != null;
 
+            // 検索中かどうか (DisplayOrderソートでないか)
+            bool isSearching = !string.IsNullOrWhiteSpace(txtSearch.Text);
+
             if (!isEditing) {
                 btnDelete.IsEnabled = isSelected;
                 btnEdit.IsEnabled = isSelected;
-                btnMoveUp.IsEnabled = isSelected;
-                btnMoveDown.IsEnabled = isSelected;
+                // 「▲」「▼」ボタンは、検索中でない(DisplayOrderソートである)時のみ有効
+                btnMoveUp.IsEnabled = isSelected && !isSearching;
+                btnMoveDown.IsEnabled = isSelected && !isSearching;
             }
-            // 編集中は通常ボタンは無効、編集用ボタンは常に有効
+
             btnRegister.IsEnabled = !isEditing;
         }
 
@@ -411,5 +532,38 @@ namespace CustomerApp {
         }
 
         #endregion
+    }
+
+    // --- ▼▼▼ APIレスポンス用のクラス ▼▼▼ ---
+    // (ファイルの下部、または別ファイルに定義)
+
+    public class ZipCodeApiResponse {
+        [JsonPropertyName("addresses")]
+        public List<AddressData>? Addresses { get; set; }
+    }
+
+    public class AddressData {
+        [JsonPropertyName("prefectureCode")]
+        public string? PrefectureCode { get; set; }
+
+        [JsonPropertyName("ja")]
+        public JapaneseAddress? Ja { get; set; }
+    }
+
+    public class JapaneseAddress {
+        [JsonPropertyName("prefecture")]
+        public string? Prefecture { get; set; }
+
+        [JsonPropertyName("address1")]
+        public string? Address1 { get; set; } // 市区町村
+
+        [JsonPropertyName("address2")]
+        public string? Address2 { get; set; } // ...
+
+        [JsonPropertyName("address3")]
+        public string? Address3 { get; set; }
+
+        [JsonPropertyName("address4")]
+        public string? Address4 { get; set; }
     }
 }

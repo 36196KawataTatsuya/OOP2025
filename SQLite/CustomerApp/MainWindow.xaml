@@ -148,6 +148,20 @@
                     <TextBox x:Name="txtName" />
                     <Label Content="電話番号 (必須)" FontSize="14"/>
                     <TextBox x:Name="txtPhone" />
+
+                    <Label Content="郵便番号 (ハイフンなし)" FontSize="14"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="txtZipCode" Grid.Column="0" KeyDown="txtZipCode_KeyDown" />
+                        <Button x:Name="btnSearchZipCode" Content="住所検索" 
+                                Style="{StaticResource PrimaryButton}" 
+                                Grid.Column="1" Padding="8" Margin="5,5,5,5"
+                                Background="#FF505050"
+                                Click="btnSearchZipCode_Click" />
+                    </Grid>
                     <Label Content="住所" FontSize="14"/>
                     <TextBox x:Name="txtAddress" TextWrapping="Wrap" MinHeight="60" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
                 </StackPanel>
@@ -194,87 +208,121 @@
         <GridSplitter Grid.Column="1" Width="5" Background="Transparent" ResizeBehavior="PreviousAndNext" />
 
         <Border Grid.Column="2" Background="White" CornerRadius="8">
-            <ListView x:Name="customerListView" Margin="5" BorderThickness="0" SelectionChanged="customerListView_SelectionChanged">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="Margin" Value="0,0,0,5" />
-                        <Setter Property="BorderBrush" Value="#FFE0E0E0" />
-                        <Setter Property="BorderThickness" Value="1" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <Border x:Name="Bd"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            Background="{TemplateBinding Background}"
-                                            Padding="{TemplateBinding Padding}"
-                                            CornerRadius="4"
-                                            SnapsToDevicePixels="true">
-                                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsSelected" Value="true">
-                                            <Setter TargetName="Bd" Property="Background" Value="#FFDDEEFF" />
-                                            <Setter TargetName="Bd" Property="BorderBrush" Value="#FF0078D4" />
-                                        </Trigger>
-                                        <Trigger Property="IsMouseOver" Value="true">
-                                            <Setter TargetName="Bd" Property="Background" Value="#FFF0F8FF" />
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
 
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Margin="5" MinHeight="80">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
+                <Grid Grid.Row="0" Margin="5,0,5,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                            <Border Grid.Column="1" Width="80" Height="80" Margin="10,0,0,0"
-                                    Background="#FFF0F0F0" CornerRadius="4" VerticalAlignment="Center">
-                                <Image Source="{Binding Picture, Converter={StaticResource ByteArrayToImageConverter}}"
-                                       Stretch="UniformToFill" />
-                            </Border>
+                    <TextBox x:Name="txtSearch" Grid.Column="0" Padding="8" BorderBrush="#FFABADB3" BorderThickness="1"
+                             VerticalContentAlignment="Center" TextChanged="txtSearch_TextChanged" Margin="0,0,5,0">
+                        <TextBox.Template>
+                            <ControlTemplate TargetType="TextBox">
+                                <Border Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="4">
+                                    <ScrollViewer x:Name="PART_ContentHost" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </TextBox.Template>
+                    </TextBox>
 
-                            <Grid Grid.Column="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
-                                </Grid.RowDefinitions>
+                    <Button x:Name="btnToggleSort" Content="降順"
+                            Style="{StaticResource PrimaryButton}" 
+                            Grid.Column="1" Padding="10,8" Margin="0"
+                            Background="#FF606060"
+                            Click="btnToggleSort_Click" />
+                </Grid>
 
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Id, StringFormat='ID: {0}'}"
-                                               FontSize="11" FontWeight="SemiBold" Foreground="#FF606060"
-                                               VerticalAlignment="Top" Margin="0,0,10,0" />
-                                    <TextBlock Grid.Column="1" Text="{Binding Name}"
-                                               FontSize="18" FontWeight="Bold"
-                                               VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+                <ListView x:Name="customerListView" Grid.Row="1" BorderThickness="0" SelectionChanged="customerListView_SelectionChanged">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                            <Setter Property="Margin" Value="0,0,0,5" />
+                            <Setter Property="BorderBrush" Value="#FFE0E0E0" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <Border x:Name="Bd"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Background="{TemplateBinding Background}"
+                                                Padding="{TemplateBinding Padding}"
+                                                CornerRadius="4"
+                                                SnapsToDevicePixels="true">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsSelected" Value="true">
+                                                <Setter TargetName="Bd" Property="Background" Value="#FFDDEEFF" />
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="#FF0078D4" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="Bd" Property="Background" Value="#FFF0F8FF" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="5" MinHeight="80">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="1" Width="80" Height="80" Margin="10,0,0,0"
+                                        Background="#FFF0F0F0" CornerRadius="4" VerticalAlignment="Center">
+                                    <Image Source="{Binding Picture, Converter={StaticResource ByteArrayToImageConverter}}"
+                                           Stretch="UniformToFill" />
+                                </Border>
+
+                                <Grid Grid.Column="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Id, StringFormat='ID: {0}'}"
+                                                   FontSize="11" FontWeight="SemiBold" Foreground="#FF606060"
+                                                   VerticalAlignment="Top" Margin="0,0,10,0" />
+                                        <TextBlock Grid.Column="1" Text="{Binding Name}"
+                                                   FontSize="18" FontWeight="Bold"
+                                                   VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+                                    </Grid>
+
+                                    <TextBlock Grid.Row="1" Text="{Binding Phone}"
+                                               FontSize="13" Foreground="#FF333333" Margin="0,5,0,0" />
+
+                                    <TextBlock Grid.Row="2" Text="{Binding Address}"
+                                               FontSize="13" Foreground="#FF333333" Margin="0,2,0,0"
+                                               TextWrapping="Wrap" />
                                 </Grid>
-
-                                <TextBlock Grid.Row="1" Text="{Binding Phone}"
-                                           FontSize="13" Foreground="#FF333333" Margin="0,5,0,0" />
-
-                                <TextBlock Grid.Row="2" Text="{Binding Address}"
-                                           FontSize="13" Foreground="#FF333333" Margin="0,2,0,0"
-                                           TextWrapping="Wrap" />
                             </Grid>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
         </Border>
 
         <Popup x:Name="notificationPopup"
