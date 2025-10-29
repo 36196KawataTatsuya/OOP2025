@@ -99,8 +99,8 @@ namespace CustomerApp {
                 if (customersWithZeroOrder.Any()) {
                     needsUpdate = true;
                     int maxOrder = allCustomers.Where(c => c.DisplayOrder > 0)
-                                               .Select(c => c.DisplayOrder)
-                                               .DefaultIfEmpty(0).Max();
+                                            .Select(c => c.DisplayOrder)
+                                            .DefaultIfEmpty(0).Max();
 
                     foreach (var customer in customersWithZeroOrder.OrderBy(c => c.Id)) {
                         maxOrder++;
@@ -154,7 +154,6 @@ namespace CustomerApp {
             // 検索状態に応じてボタンの状態を更新
             UpdateButtonStates();
         }
-
 
         private void btnRegister_Click(object sender, RoutedEventArgs e) {
             if (string.IsNullOrWhiteSpace(txtName.Text) || string.IsNullOrWhiteSpace(txtPhone.Text)) {
@@ -534,7 +533,7 @@ namespace CustomerApp {
         #endregion
     }
 
-    // --- ▼▼▼ APIレスポンス用のクラス ▼▼▼ ---
+    // APIレスポンス用のクラス
     // (ファイルの下部、または別ファイルに定義)
 
     public class ZipCodeApiResponse {
