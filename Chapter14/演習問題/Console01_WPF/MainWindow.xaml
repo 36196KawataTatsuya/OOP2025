@@ -1,0 +1,41 @@
+﻿<Window x:Class="Exercise01_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Exercise01_WPF"
+        mc:Ignorable="d"
+        Title="非同期テキストリーダー" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- 1. ファイル選択ボタン -->
+        <Button x:Name="SelectFileButton" 
+                Grid.Row="0" 
+                Content="テキストファイルを選択" 
+                Click="SelectFileButton_Click" 
+                HorizontalAlignment="Left" 
+                Padding="10,5"/>
+
+        <!-- 2. 読み込み状態を表示するテキストブロック -->
+        <TextBlock x:Name="StatusText" 
+                   Grid.Row="1" 
+                   Text="ファイルが選択されていません" 
+                   Margin="0,10,0,5" 
+                   FontStyle="Italic"/>
+
+        <!-- 3. ファイル内容を表示するスクロール可能なテキストブロック -->
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
+            <TextBlock x:Name="FileContentText" 
+                       TextWrapping="Wrap" 
+                       Margin="5"
+                       FontFamily="Consolas"
+                       Background="#f4f4f4"/>
+        </ScrollViewer>
+
+    </Grid>
+</Window>
