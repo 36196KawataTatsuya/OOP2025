@@ -12,10 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Exercise01_WPF {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+namespace Console01_WPF {
     public partial class MainWindow : Window {
         public MainWindow() {
             InitializeComponent();
@@ -25,7 +22,6 @@ namespace Exercise01_WPF {
         /// 「ファイルを選択」ボタンがクリックされたときのイベントハンドラ
         /// </summary>
         private async void SelectFileButton_Click(object sender, RoutedEventArgs e) {
-            // 1. ファイル選択ダイアログを表示
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "テキストファイル (*.txt)|*.txt|すべてのファイル (*.*)|*.*";
 
@@ -33,23 +29,38 @@ namespace Exercise01_WPF {
                 string filePath = openFileDialog.FileName;
 
                 // UIを更新して「読み込み中」を通知
-                FileContentText.Text = ""; // 前の内容をクリア
+                FileContentText.Text = "";
                 StatusText.Text = "読み込み中...";
+                SelectFileButton.IsEnabled = false;
 
                 try {
-                    // 2. ファイルを非同期で読み込む
-                    // UIスレッドをブロックしないように await を使用
-                    string fileContent = await ReadTextFileAsync(filePath);
+                    // 2. ファイルを非同期で読み込むタスクを開始
+                    Task<string> readTask = ReadTextFileAsync(filePath);
 
-                    // 3. 読み込み完了後、UIを更新
+                    // 3. テストモードの待機タスクを準備
+                    Task delayTask = Task.CompletedTask;
+                    if (TestModeCheckBox.IsChecked == true) {
+                        StatusText.Text = "読み込み中... (テストモードで5秒待機します)";
+                        // 5秒待機するタスクをセット
+                        delayTask = Task.Delay(5000);
+                    }
+
+                    // 4. 両方のタスク（読み込み と 待機）が完了するのを待つ
+                    await Task.WhenAll(readTask, delayTask);
+
+                    // 5. 読み込み完了後、UIを更新
+                    string fileContent = await readTask;
                     FileContentText.Text = fileContent;
                     StatusText.Text = $"読み込み完了: {filePath}";
 
                 }
                 catch (Exception ex) {
-                    // 4. エラー処理
+                    // 6. エラー処理
                     StatusText.Text = "読み込みエラー";
                     MessageBox.Show($"ファイルの読み込み中にエラーが発生しました。\n{ex.Message}", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally {
+                    SelectFileButton.IsEnabled = true;
                 }
             }
         }
@@ -57,18 +68,17 @@ namespace Exercise01_WPF {
         /// <summary>
         /// 指定されたパスのテキストファイルを非同期で読み込む
         /// </summary>
-        /// <param name="filePath">ファイルパス</param>
-        /// <returns>ファイルの内容（文字列）</returns>
         private async Task<string> ReadTextFileAsync(string filePath) {
-            // File.ReadAllTextAsync を使うと、バックグラウンドスレッドで
-            // ファイルIOが行われ、完了したら結果が返されます。
-            // この間、UIスレッドは応答可能な状態を維持します。
             using (StreamReader reader = new StreamReader(filePath)) {
                 return await reader.ReadToEndAsync();
             }
+        }
 
-            // もしくは、よりシンプルな方法 (ただし、巨大なファイルではメモリを消費します)
-            // return await File.ReadAllTextAsync(filePath);
+        /// <summary>
+        /// 【NEW】UI応答テスト用ボタンのクリックイベント
+        /// </summary>
+        private void UiTestButton_Click(object sender, RoutedEventArgs e) {
+            MessageBox.Show("UIは応答しています！", "UIテスト");
         }
     }
 }
