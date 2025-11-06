@@ -41,7 +41,7 @@ namespace WebBrowser {
 
         // 検索実行ボタン
         private void GoButton_Click(object sender, RoutedEventArgs e) {
-
+                
         }
 
         private void AddressBar_KeyDown(object sender, KeyEventArgs e) {
@@ -51,7 +51,7 @@ namespace WebBrowser {
         // URLナビゲート処理
         private void NavigateToUrl(string url) {
             // WebView2が初期化されていない場合は無効
-            if (WebView == null || WebView.CoreWebView2 == null) {
+            if (WebView == null || WebView.CoreWebView2 == null) {      
                 return;
             }
 

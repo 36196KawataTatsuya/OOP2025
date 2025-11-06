@@ -19,14 +19,31 @@
         <DockPanel Grid.Row="0" Margin="5">
             <Button Content="戻る" Width="60" Margin="0,0,5,0" Click="BackButton_Click"/>
             <Button Content="進む" Width="60" Margin="0,0,5,0" Click="ForwardButton_Click"/>
-            <TextBox x:Name="AddressBar" Width="450" Margin="0,0,5,0" VerticalAlignment="Center" KeyDown="AddressBar_KeyDown"/>
+            <TextBox x:Name="AddressBar" Width="450" Margin="0,0,5,0" VerticalAlignment="Center"
+                     KeyDown="AddressBar_KeyDown"/>
             <Button Content="移動" Width="60" Click="GoButton_Click"/>
         </DockPanel>
+
+        <!-- プログレスバー -->
+        <ProgressBar x:Name="LoadingBar" Grid.Row="1" Height="4"
+                     Margin="5,0,5,5" Minimum="0" Maximum="100" Visibility="Collapsed"
+                     IsIndeterminate="False"/>
 
         <!-- ブラウザー -->
         <Wpf:WebView2 x:Name="WebView" Margin="5" Grid.Row="2"
                       NavigationCompleted="WebView_NavigationCompleted"/>
 
-        <Popup x:Name="notificationPopup"/>
+        <Popup x:Name="notificationPopup"
+           Placement="Center"
+           PlacementTarget="{Binding ElementName=mainWindow}"
+           AllowsTransparency="True"
+           PopupAnimation="Fade">
+            <Border Background="#DD333333" CornerRadius="8" Padding="15,10" Margin="10">
+                <TextBlock x:Name="popupText" Foreground="White" FontSize="14" />
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" Opacity="0.3" BlurRadius="10" />
+                </Border.Effect>
+            </Border>
+        </Popup>
     </Grid>
 </Window>
