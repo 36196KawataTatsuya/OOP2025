@@ -18,13 +18,15 @@
         <!-- アドレスバー -->
         <DockPanel Grid.Row="0" Margin="5">
             <Button Content="戻る" Width="60" Margin="0,0,5,0" Click="BackButton_Click"/>
-            <Button Content="進む" Width="60" Margin="0,0,5,0" Click="FowardButton_Click"/>
-            <TextBox x:Name="AddressBar" Width="450" Margin="0,0,5,0" VerticalAlignment="Center"/>
+            <Button Content="進む" Width="60" Margin="0,0,5,0" Click="ForwardButton_Click"/>
+            <TextBox x:Name="AddressBar" Width="450" Margin="0,0,5,0" VerticalAlignment="Center" KeyDown="AddressBar_KeyDown"/>
             <Button Content="移動" Width="60" Click="GoButton_Click"/>
         </DockPanel>
 
         <!-- ブラウザー -->
-        <Wpf:WebView2 x:Name="WebView" Margin="5" Grid.Row="2"/>
+        <Wpf:WebView2 x:Name="WebView" Margin="5" Grid.Row="2"
+                      NavigationCompleted="WebView_NavigationCompleted"/>
 
+        <Popup x:Name="notificationPopup"/>
     </Grid>
 </Window>
