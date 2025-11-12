@@ -1,10 +1,12 @@
 ﻿using System.Diagnostics;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 
 namespace Section05 {
     internal class Program {
         static async Task Main(string[] args) {
-            await Code14_20.Run();
+            var ta = new TaskExample();
+            await ta.Run();
         }
 
         public class Code14_20 {
