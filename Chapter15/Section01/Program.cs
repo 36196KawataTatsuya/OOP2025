@@ -18,12 +18,12 @@
         public string GetMessage() => "おはよう";
     }
 
-    class GreetingAfternoon: IGreeting {
+    class GreetingAfternoon : IGreeting {
         public string GetMessage() => "こんにちは";
     }
 
     class GreetingEvening : IGreeting {
-        public  string GetMessage() => "こんばんは";
+        public string GetMessage() => "こんばんは";
     }
 
 }
