@@ -209,7 +209,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Section01", "Chapter15\Sect
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TemplateMethod", "TemplateMethod", "{34E4EF72-AB95-4B05-A0CA-1EAEF95F73E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFileProcesssor", "Chapter15\TemplateMethod\TextFileProcesssor\TextFileProcesssor.csproj", "{3E2B1A9F-6051-4ABC-BBE8-F9A8B0EA3C12}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFileProcessor", "Chapter15\TemplateMethod\TextFileProcesssor\TextFileProcessor.csproj", "{3E2B1A9F-6051-4ABC-BBE8-F9A8B0EA3C12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LineCounter", "Chapter15\TemplateMethod\LineCounter\LineCounter.csproj", "{AD716ACE-8E48-4ECC-94DF-37F36BA712AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -497,6 +499,10 @@ Global
 		{3E2B1A9F-6051-4ABC-BBE8-F9A8B0EA3C12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E2B1A9F-6051-4ABC-BBE8-F9A8B0EA3C12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E2B1A9F-6051-4ABC-BBE8-F9A8B0EA3C12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD716ACE-8E48-4ECC-94DF-37F36BA712AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD716ACE-8E48-4ECC-94DF-37F36BA712AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD716ACE-8E48-4ECC-94DF-37F36BA712AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD716ACE-8E48-4ECC-94DF-37F36BA712AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -586,6 +592,7 @@ Global
 		{11A15ED1-307A-4A9C-B89A-427B1CAA849A} = {4F57C205-0874-42BA-B1A7-7D31DBE36A9E}
 		{34E4EF72-AB95-4B05-A0CA-1EAEF95F73E1} = {4F57C205-0874-42BA-B1A7-7D31DBE36A9E}
 		{3E2B1A9F-6051-4ABC-BBE8-F9A8B0EA3C12} = {34E4EF72-AB95-4B05-A0CA-1EAEF95F73E1}
+		{AD716ACE-8E48-4ECC-94DF-37F36BA712AA} = {34E4EF72-AB95-4B05-A0CA-1EAEF95F73E1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {66B8B959-9282-491F-AE2A-1B66417F4425}
