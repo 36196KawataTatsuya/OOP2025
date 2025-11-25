@@ -17,6 +17,8 @@ namespace MyWeatherApp.Models {
         public double Latitude { get; set; }
         [JsonPropertyName("longitude")]
         public double Longitude { get; set; }
+        [JsonPropertyName("admin1")]
+        public string Admin1 { get; set; }
     }
 
     // --- IP-API ---
@@ -27,6 +29,8 @@ namespace MyWeatherApp.Models {
         public string Country { get; set; }
         [JsonPropertyName("city")]
         public string City { get; set; }
+        [JsonPropertyName("regionName")]
+        public string RegionName { get; set; }
         [JsonPropertyName("lat")]
         public double Lat { get; set; }
         [JsonPropertyName("lon")]

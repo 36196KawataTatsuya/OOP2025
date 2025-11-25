@@ -14,8 +14,14 @@ namespace MyWeatherApp {
             InitializeHttpClient();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-            var locService = new LocationService(_http);
-            var weatherService = new WeatherService(_http);
+            // 1. Loggerのインスタンス生成
+            var logger = new Logger();
+
+            // 2. ServiceにLoggerを渡す
+            var locService = new LocationService(_http, logger);
+            var weatherService = new WeatherService(_http); // 必要ならWeatherServiceにも渡せます
+
+            logger.LogInfo("アプリケーションを開始しました。");
 
             while (true) {
                 Console.Clear();
@@ -30,14 +36,39 @@ namespace MyWeatherApp {
 
                 LocationInfo location = null;
 
-                Console.WriteLine(); // 改行
+                Console.WriteLine();
 
                 if (choice == "1") {
-                    Console.Write("地域名を入力 (例: Tokyo, New York): ");
+                    Console.Write("地域名を入力 (例: Ota Gunma, Tokyo): ");
                     var query = Console.ReadLine();
                     if (!string.IsNullOrWhiteSpace(query)) {
                         Console.WriteLine("検索中...");
-                        location = await locService.GetLocationByNameAsync(query);
+
+                        // 修正したメソッドを呼び出す
+                        var candidates = await locService.GetLocationCandidatesAsync(query);
+
+                        if (candidates.Count == 0) {
+                            Console.WriteLine("見つかりませんでした。");
+                        } else if (candidates.Count == 1) {
+                            // 1件だけならそのまま採用
+                            location = candidates[0];
+                        } else {
+                            // 複数ある場合は選ばせる
+                            Console.WriteLine($"\n{candidates.Count} 件の候補が見つかりました。番号を選択してください:");
+
+                            for (int i = 0; i < candidates.Count; i++) {
+                                var loc = candidates[i];
+                                string regionInfo = string.IsNullOrEmpty(loc.Admin1) ? loc.Country : $"{loc.Admin1}, {loc.Country}";
+                                Console.WriteLine($"{i + 1}. {loc.Name} ({regionInfo})");
+                            }
+
+                            Console.Write("\n番号を入力 (キャンセルは 0): ");
+                            if (int.TryParse(Console.ReadLine(), out int selectedIndex) && selectedIndex > 0 && selectedIndex <= candidates.Count) {
+                                location = candidates[selectedIndex - 1];
+                            } else {
+                                Console.WriteLine("選択をキャンセルしました。");
+                            }
+                        }
                     }
                 } else if (choice == "2") {
                     Console.WriteLine("現在地を特定中...");
